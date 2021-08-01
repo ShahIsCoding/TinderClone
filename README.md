@@ -1,2 +1,3 @@
 # MERN__PROJECTS
-some mern project
+Starting the Mern devs with Tinder development.
+
