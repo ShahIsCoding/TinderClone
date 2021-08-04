@@ -1,5 +1,6 @@
-import React,{useEffect, useState} from 'react'
-import {Form,FormGroup,Label,Input,FormText,Button,} from 'reactstrap';
+import React,{ useState} from 'react'
+import { useHistory } from 'react-router';
+import {Form,FormGroup,Label,Input,Button,} from 'reactstrap';
 function UserAuth(props) {
 
     const [firstname, setfirstName] = useState('')
@@ -9,9 +10,13 @@ function UserAuth(props) {
     const [age,setAge]= useState(16);
     const [gender,setGender]= useState('Male');
     const [page,setPage]=useState(true);
+    const history = useHistory();
+    console.log(history.replace);
+
     const handleSubmit = (e) =>{
         e.preventDefault();
         props.handleUser(firstname,lastname,email,password,age,gender);
+        history.replace('/');
     }
 
     return (
