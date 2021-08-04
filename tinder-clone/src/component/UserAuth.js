@@ -1,17 +1,21 @@
 import React,{useEffect, useState} from 'react'
-
+import {Form,FormGroup,Label,Input,FormText,Button,} from 'reactstrap';
 function UserAuth(props) {
 
+    const [firstname, setfirstName] = useState('')
+    const [lastname, setlastName] = useState('')
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
-
+    const [age,setAge]= useState(16);
+    const [gender,setGender]= useState('Male');
+    const [page,setPage]=useState(true);
     const handleSubmit = (e) =>{
         e.preventDefault();
-        props.handleUser(email,password);
+        props.handleUser(firstname,lastname,email,password,age,gender);
     }
-    
+
     return (
-        <div className='userAuth' style={{backgroundImage:'https://images.unsplash.com/photo-1532932371123-928bc0091ec0?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=335&q=80'}}>
+        <div className='userAuth' >
             <div className='userAuth__choicepage'>
                 <div className='userAuth__choicepage--left'>
                     <img 
@@ -22,19 +26,55 @@ function UserAuth(props) {
                     <h3>Tinder Clone</h3>
                 </div>
                 <div className='userAuth__choicepage--right'>
-                    <h2>Log In to Tinder</h2>
+                    {page?
+                        <h2>Log In to Tinder</h2>
+                    :
+                    <h2>SignIn In to Tinder</h2>
+                    }
+                    <div className='right__btns'>
+                        <Button className={page? 'pnk btn__login' : 'wht btn__login' }  onClick={() => setPage(true)} >LogIn</Button>
+                        <Button className={(page)? 'wht btn__signup' : 'pnk btn__signup'} onClick={() => setPage(false)}  >Signup</Button>
+                    </div>
                     <hr/>
-                    <form onSubmit={handleSubmit}>
-                        <div className='right__input'>
-                            <label>Email</label>
-                            <input type='email' name='email' value={email} onChange={(e)=>setEmail(e.target.value)} placeholder='Enter the Email'/>
-                        </div>
-                        <div className='right__input'>
-                            <label >password</label>
-                            <input type='password' name='password' value={password} onChange={(e)=>setPassword(e.target.value)} placeholder='Enter the password'/>
-                        </div>
-                        <button className='userAuth__choicepage--btn' type='submit'>Let's GO</button>
-                    </form>
+                    <Form onSubmit={handleSubmit}>
+                        {page?
+                            <div className='signupPage'>
+                                <div className='Namediv'>
+                                    <FormGroup className='right__input name firstname'>
+                                        <Label>First Name</Label>
+                                        <Input type='text' name='firstname' value={firstname} onChange={(e)=>setfirstName(e.target.value)} placeholder='Enter First Name' />
+                                    </FormGroup>
+                                    <FormGroup className='right__input name'>
+                                        <Label>Last Name</Label>
+                                        <Input type='text ' name='lastname' value={lastname} onChange={(e)=>setlastName(e.target.value)} placeholder='Enter Last Name' />
+                                    </FormGroup>
+                                </div>
+                                <div className='Numberdiv'>
+                                    <FormGroup className='gender'>
+                                        <Label>Gender</Label>
+                                        <Input type="select" name="gender"  value={gender} onChange={(e)=>setGender(e.target.value)}  >
+                                        <option>Male</option>
+                                        <option>Female</option>
+                                        <option>Others</option>
+                                        </Input>
+                                    </FormGroup>
+                                    <FormGroup>
+                                        <Label>Age</Label>
+                                        <Input type='number' name='age' value={age} onChange={(e)=>setAge(e.target.value)} placeholder='16+' />
+                                    </FormGroup>
+                                </div>
+                            </div>                 
+                        :null
+                        }<FormGroup className='right__input'>
+                            <Label>Email</Label>
+                            <Input type='email' name='email' value={email} onChange={(e)=>setEmail(e.target.value)} placeholder='Enter the Email' />
+                        </FormGroup>
+                        <FormGroup  className='right__input'>
+                            <Label>password</Label>
+                            <Input  type='password' name='password' value={password} onChange={(e)=>setPassword(e.target.value)} placeholder='Enter the password' />
+                        </FormGroup>
+                        <Button type='submit' className='wht'>Let's Go</Button>
+                    </Form>
                 </div>
                 </div>
             {

@@ -17,20 +17,27 @@ function MainComponent() {
 
     const [user,setUser] = useState({
         user:{
+            firstname:'',
+            lastname:'',
             email:'',
-            password:''
+            password:'',
+            age:'',
+            gender:''
         }
     }
     );
-    const handleUser = (email,password) =>{
+    const handleUser = (firstname,lastname,email,password,age,gender) =>{
         setUser({...user,
             user:{
+                firstname:firstname,
+                lastname:lastname,
                 email:email,
-                password:password
+                password:password,
+                age:age,
+                gender:gender
             }
         });
     }
-    console.log(user);
     return (
         <div>
              <Switch>
