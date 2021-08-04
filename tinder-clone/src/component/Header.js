@@ -26,7 +26,7 @@ function Header({backButton,user}) {
             <Link to='/'>
                 <img 
                     className='header__logo'
-                    src='https://uxwing.com/wp-content/themes/uxwing/download/10-brands-and-social-media/tinder.png'
+                    src='assets/tinder.png'
                     alt='tinder__logo'
                 />
             </Link>    
