@@ -1,6 +1,8 @@
 import React,{ useState} from 'react'
 import { useHistory } from 'react-router';
 import {Form,FormGroup,Label,Input,Button,} from 'reactstrap';
+import  {axiosInstance} from '../axios'; 
+
 function UserAuth(props) {
 
     const [firstname, setfirstName] = useState('')
@@ -11,14 +13,39 @@ function UserAuth(props) {
     const [gender,setGender]= useState('Male');
     const [page,setPage]=useState(true);
     const history = useHistory();
-    console.log(history.replace);
 
     const handleSubmit = (e) =>{
         e.preventDefault();
-        props.handleUser(firstname,lastname,email,password,age,gender);
-        history.replace('/');
-    }
 
+        const data = {
+            name:(firstname+lastname),
+            email:email,
+            password:password,
+            age:age,
+            gender:gender
+        };
+
+        (page)?
+            axiosInstance.post('/users',data)
+            .then((resp) => {
+                history.replace('/');
+                props.handleUser(firstname,lastname,email,password,age,gender);
+                console.log(resp)})
+            .catch((err) => {
+                alert(err.response.data);
+            })
+        :
+            axiosInstance.post('/users/user',data)
+            .then((resp) => {
+                var response = resp.data[0];
+                console.log(response);
+                history.replace('/');
+                props.handleUser(response.firstname,response.lastname,response.email,response.age,response.gender);
+            })
+            .catch((err) => {
+               console.log(err);
+            });
+    }
     return (
         <div className='userAuth' >
             <div className='userAuth__choicepage'>

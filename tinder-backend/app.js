@@ -11,6 +11,8 @@ var cors = require('cors');
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
+var cardRouter = require('./routes/cards');
+var matchRouter = require('./routes/macthlist');
 
 const connection_url = process.env.MONGODB_URL;
 const connect = mongoose.connect(connection_url);
@@ -61,6 +63,8 @@ function auth(req,res,next){
 
 // app.use(auth);
 app.use('/', indexRouter);
+app.use('/cards',cardRouter);
+app.use('/matchlist',matchRouter);
 app.use('/users', usersRouter);
 
 // catch 404 and forward to error handler

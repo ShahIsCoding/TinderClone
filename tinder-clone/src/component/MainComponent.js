@@ -20,22 +20,21 @@ function MainComponent() {
             firstname:'',
             lastname:'',
             email:'',
-            password:'',
             age:'',
             gender:''
     }
     );
-    const handleUser = (firstname,lastname,email,password,age,gender) =>{
+    const handleUser = (firstname,lastname,email,age,gender) =>{
         setUser({
                 firstname:firstname,
                 lastname:lastname,
                 email:email,
-                password:password,
                 age:age,
                 gender:gender
             }
         );
     }
+
     return (
         <div>
              <Switch>
@@ -51,6 +50,7 @@ function MainComponent() {
                     <Chats />
                 </Route>
                 <Route path='/profile'> 
+                    <Header />
                     <Profile />
                 </Route>
                 <Route path='/'>
