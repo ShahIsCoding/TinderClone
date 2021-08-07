@@ -1,20 +1,19 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
+const {ObjectId} = mongoose.Schema;
 
-const match = new Schema({
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'User'
-});
 const matchList = new Schema({
     user:{
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'User'
+        type: ObjectId,
+        ref:'User'
     },
-    matches:[match]    
-    },{
-        timestamp:true
-    });
+    matches:[{
+        type: ObjectId,
+        ref:'User'
+    }]    
+    
+});
 
-const MatchList = new Schema('Matches',matchList);
+const MatchList = mongoose.model('Match',matchList);
 
 module.exports = MatchList;
