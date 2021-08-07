@@ -2,26 +2,38 @@ import {React,useState,useEffect} from 'react'
 import TinderCard from 'react-tinder-card';
 import {axiosInstance} from '../axios';
 
-function Cards() {
+function Cards(props) {
     
     const [people, setPeople] = useState([]);
-
+    const [Id,setId]=useState(null);
+    
     useEffect(() => {
         async function fetchData(){
-            const request = await axiosInstance.get('/cards');
-            
+            const request = await axiosInstance.get('/users');
+            console.log('fetchData',request.data);            
             setPeople(request.data); 
+        }   
+        async function fetchUser(){
+            const request = await axiosInstance.post('/users/user',{
+                email:props.email
+            });
+            console.log('fetchUser',request.data);
+            setId(request.data); 
         }
+        fetchUser();
         fetchData();
     }, []);
-    // console.log(people);
     
-    const swiped = (direction,nameToDelete) =>{
-        console.log(JSON.stringify(nameToDelete));
-    }
+    const swiped = (direction,person) =>{
+        if((direction === 'right') && (Id != null)){
+            axiosInstance.post(`/${Id}`,{
+                _id:person._id
+            })
+        }
+   }
 
     const outOfFrame = (name) =>{
-        console.log(name + " left the frame");
+        console.log(name + " left the frame" + Id);
     }
 
     return (
@@ -34,11 +46,11 @@ function Cards() {
                     key={person.name}
                     preventSwipe={["up","down"]}
                     onSwipe={(dir) => swiped(dir,person)}
-                    onCardLeftScreen={()=> outOfFrame(person.name)}
+                    onCardLeftScreen={()=> outOfFrame(person.firstname +' '+ person.lastname)}
                 >
                     <div    style={{backgroundImage:`url(${person.imgUrl})`}}
                             className='card' >
-                            <h3>{person.name}</h3>
+                            <h3>{person.firstname +' '+ person.lastname}</h3>
                     </div>
                 </TinderCard>
             );})} 

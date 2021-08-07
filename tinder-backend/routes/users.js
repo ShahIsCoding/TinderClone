@@ -13,9 +13,10 @@ router.get('/', (req, res, next) => {
   .catch((err) => next(err));
 })
 .post('/', (req, res, next) => {
-  User.find({email:req.body.email})
+  User.findOne({email:req.body.email})
   .then((user) => {
-    if(!user){
+    console.log(JSON.stringify( user));
+    if(user===null){
       User.create(req.body)
       .then((user) =>{
         res.statusCode = 200;
@@ -23,10 +24,11 @@ router.get('/', (req, res, next) => {
         res.json(user);
       },(err) => next(err))
     }
+    else{
     res.statusCode = 400;
-    res.send('User Already exists');
-    },(err) => next(err))  
-    .catch((err) => next(err));
+    res.send('User Already exists');}
+  },(err) => next(err))  
+  .catch((err) => next(err));
 })
 .delete('/', (req, res, next) => {
   User.remove()

@@ -38,25 +38,25 @@ function MainComponent() {
     return (
         <div>
              <Switch>
-                <Route path='/users'>
-                    <UserAuth handleUser={handleUser} />
-                </Route>
                 <Route path='/chat/:person'>
                     <Header backButton='/chat'/>
                     <ChatScreen />
                 </Route>
                 <Route path='/chat'>
-                    <Header backButton='/'/>
+                    <Header backButton='/cards'/>
                     <Chats />
                 </Route>
                 <Route path='/profile'> 
                     <Header />
-                    <Profile />
+                    <Profile handleUser={handleUser} />
+                </Route>
+                <Route path='/cards'>
+                    <Header user={user.firstname}  />
+                    <Cards email={user.email}/>
+                    <SwipeButtons />
                 </Route>
                 <Route path='/'>
-                    <Header user={user.firstname} />
-                    <Cards />
-                    <SwipeButtons />
+                    <UserAuth handleUser={handleUser} />
                 </Route>
             </Switch>
         </div>

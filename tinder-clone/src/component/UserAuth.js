@@ -8,19 +8,22 @@ function UserAuth(props) {
     const [firstname, setfirstName] = useState('')
     const [lastname, setlastName] = useState('')
     const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
+    const [imgUrl, setimgUrl] = useState("");
     const [age,setAge]= useState(16);
     const [gender,setGender]= useState('Male');
+
     const [page,setPage]=useState(true);
     const history = useHistory();
+
 
     const handleSubmit = (e) =>{
         e.preventDefault();
 
         const data = {
-            name:(firstname+lastname),
+            firstname:firstname,
+            lastname:lastname,
             email:email,
-            password:password,
+            imgUrl:imgUrl,
             age:age,
             gender:gender
         };
@@ -29,7 +32,7 @@ function UserAuth(props) {
             axiosInstance.post('/users',data)
             .then((resp) => {
                 history.replace('/');
-                props.handleUser(firstname,lastname,email,password,age,gender);
+                props.handleUser(firstname,lastname,email,imgUrl,age,gender);
                 console.log(resp)})
             .catch((err) => {
                 alert(err.response.data);
@@ -39,7 +42,7 @@ function UserAuth(props) {
             .then((resp) => {
                 var response = resp.data[0];
                 console.log(response);
-                history.replace('/');
+                history.replace('/cards');
                 props.handleUser(response.firstname,response.lastname,response.email,response.age,response.gender);
             })
             .catch((err) => {
@@ -103,27 +106,12 @@ function UserAuth(props) {
                         </FormGroup>
                         <FormGroup  className='right__input'>
                             <Label>password</Label>
-                            <Input  type='password' name='password' value={password} onChange={(e)=>setPassword(e.target.value)} placeholder='Enter the password' />
+                            <Input  type='text' name='imgUrl' value={imgUrl} onChange={(e)=>setimgUrl(e.target.value)} placeholder='Enter the imgUrl' />
                         </FormGroup>
                         <Button type='submit' className='wht'>Let's Go</Button>
                     </Form>
                 </div>
                 </div>
-            {
-            /*
-            create an account
-                email,
-                name,
-                age,
-                imgUrl,
-                age,
-                gender,
-                place
-
-            alreay have n acc
-                email,
-                password
-            */}
         </div>
     )
 }
