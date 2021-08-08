@@ -40,14 +40,9 @@ router.get('/', (req, res, next) => {
   .catch((err) => next(err));
 });
 
-router.post('/user',(req,res,next) =>{
-    User.find({email:req.body.email})
+router.get('/:emailId',(req,res,next) =>{
+    User.findOne({email:req.params.emailId})
     .then((user) => {
-      if(!user){
-        err = new Error('User Already exists');
-        err.status = 400;
-        return next(err);
-     }
       res.statusCode = 200;
       res.setHeader('Content-Type','application/json');
       res.json(user);

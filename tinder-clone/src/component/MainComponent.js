@@ -16,23 +16,10 @@ import Profile from './Profile';
 
 function MainComponent() {
 
-    const [user,setUser] = useState({
-            firstname:'',
-            lastname:'',
-            email:'',
-            age:'',
-            gender:''
-    }
-    );
-    const handleUser = (firstname,lastname,email,age,gender) =>{
-        setUser({
-                firstname:firstname,
-                lastname:lastname,
-                email:email,
-                age:age,
-                gender:gender
-            }
-        );
+    const [email,setEmail] = useState('');
+
+    const handleUser = (email) =>{
+        setEmail(email);
     }
 
     return (
@@ -51,8 +38,8 @@ function MainComponent() {
                     <Profile handleUser={handleUser} />
                 </Route>
                 <Route path='/cards'>
-                    <Header user={user.firstname}  />
-                    <Cards email={user.email}/>
+                    <Header />
+                    <Cards email={email}/>
                     <SwipeButtons />
                 </Route>
                 <Route path='/'>

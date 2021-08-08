@@ -25,8 +25,8 @@ router.route('/:userId')
             res.setHeader('Content-Type','application/json')
             res.json(user);
         })}
-        user.matches.push(req.body._id)
-        user.save()
+        user.matches.push(req.body._id);
+        user.save();
         res.statusCode = 200;
         res.setHeader('Content-Type','application/json')
         res.json(user);

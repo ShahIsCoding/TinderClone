@@ -7,8 +7,8 @@ function UserAuth(props) {
 
     const [firstname, setfirstName] = useState('')
     const [lastname, setlastName] = useState('')
-    const [email, setEmail] = useState("");
-    const [imgUrl, setimgUrl] = useState("");
+    const [email, setEmail] = useState('');
+    const [imgUrl, setimgUrl] = useState('');
     const [age,setAge]= useState(16);
     const [gender,setGender]= useState('Male');
 
@@ -27,13 +27,10 @@ function UserAuth(props) {
             age:age,
             gender:gender
         };
-
+        props.handleUser(email);
         (page)?
             axiosInstance.post('/users',data)
-            .then((resp) => {
-                history.replace('/');
-                props.handleUser(firstname,lastname,email,imgUrl,age,gender);
-                console.log(resp)})
+            .then((resp) => {})
             .catch((err) => {
                 alert(err.response.data);
             })
@@ -41,13 +38,12 @@ function UserAuth(props) {
             axiosInstance.post('/users/user',data)
             .then((resp) => {
                 var response = resp.data[0];
-                console.log(response);
-                history.replace('/cards');
-                props.handleUser(response.firstname,response.lastname,response.email,response.age,response.gender);
+                props.handleUser(response.email);                
             })
             .catch((err) => {
                console.log(err);
             });
+            history.replace('/cards');
     }
     return (
         <div className='userAuth' >

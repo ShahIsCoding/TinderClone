@@ -5,35 +5,37 @@ import {axiosInstance} from '../axios';
 function Cards(props) {
     
     const [people, setPeople] = useState([]);
-    const [Id,setId]=useState(null);
+    const [Id,setId]=useState();
     
     useEffect(() => {
+
+        async function fetchUser(){
+            const request =  await axiosInstance.get(`/users/${props.email}`);
+            console.log('fetchUser',request.data._id);
+            setId(request.data._id);
+        }
         async function fetchData(){
             const request = await axiosInstance.get('/users');
             console.log('fetchData',request.data);            
             setPeople(request.data); 
-        }   
-        async function fetchUser(){
-            const request = await axiosInstance.post('/users/user',{
-                email:props.email
-            });
-            console.log('fetchUser',request.data);
-            setId(request.data); 
         }
         fetchUser();
         fetchData();
-    }, []);
+    },[]);
     
     const swiped = (direction,person) =>{
+        console.log('_id',person._id);
+        console.log(`/matchlist/${Id}`);
         if((direction === 'right') && (Id != null)){
-            axiosInstance.post(`/${Id}`,{
+           const request =  axiosInstance.post(`/${Id}`,{
                 _id:person._id
-            })
+            });
+            console.log('swiped',request);
         }
    }
 
     const outOfFrame = (name) =>{
-        console.log(name + " left the frame" + Id);
+        console.log(name + " left the frame");
     }
 
     return (
