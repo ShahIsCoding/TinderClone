@@ -17,19 +17,23 @@ router.route('/:userId')
 .post((req,res,next) =>{
     MatchList.findOne({user:req.params.userId})
     .then((user) =>{
-        console.log(JSON.stringify( user));
         if(user === null) {     
-        MatchList.create({user:req.params.userId})
-        .then((user) =>{
+            MatchList.create({user:req.params.userId})
+            .then((user) =>{
+                user.matches.push(req.body._id);
+                user.save();
+                res.statusCode = 200;
+                res.setHeader('Content-Type','application/json')
+                res.json(user);    
+            },err => next(err))
+        }
+        else{
+            user.matches.push(req.body._id);
+            user.save();
             res.statusCode = 200;
             res.setHeader('Content-Type','application/json')
             res.json(user);
-        })}
-        user.matches.push(req.body._id);
-        user.save();
-        res.statusCode = 200;
-        res.setHeader('Content-Type','application/json')
-        res.json(user);
+        }
     },(err)=> next(err))
     .catch((err)=> next(err));
 })

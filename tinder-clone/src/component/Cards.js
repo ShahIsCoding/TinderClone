@@ -11,27 +11,25 @@ function Cards(props) {
 
         async function fetchUser(){
             const request =  await axiosInstance.get(`/users/${props.email}`);
-            console.log('fetchUser',request.data._id);
             setId(request.data._id);
         }
         async function fetchData(){
-            const request = await axiosInstance.get('/users');
-            console.log('fetchData',request.data);            
+            const request = await axiosInstance.get('/users');     
             setPeople(request.data); 
         }
         fetchUser();
         fetchData();
     },[]);
     
-    const swiped = (direction,person) =>{
-        console.log('_id',person._id);
-        console.log(`/matchlist/${Id}`);
-        if((direction === 'right') && (Id != null)){
-           const request =  axiosInstance.post(`/${Id}`,{
-                _id:person._id
-            });
-            console.log('swiped',request);
+    const swiped = (direction,person,Id) =>{
+        async function  swipe(direction,personId,Id){
+            if((direction === 'right') && (Id != null)){
+                const request = await axiosInstance.post(`/matchlist/${Id}`,{
+                     _id:personId
+                 });
+                }
         }
+        swipe(direction,person._id,Id);
    }
 
     const outOfFrame = (name) =>{
@@ -47,7 +45,7 @@ function Cards(props) {
                     className='swipe'
                     key={person.name}
                     preventSwipe={["up","down"]}
-                    onSwipe={(dir) => swiped(dir,person)}
+                    onSwipe={(dir) => swiped(dir,person,Id)}
                     onCardLeftScreen={()=> outOfFrame(person.firstname +' '+ person.lastname)}
                 >
                     <div    style={{backgroundImage:`url(${person.imgUrl})`}}
