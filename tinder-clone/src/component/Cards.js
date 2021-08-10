@@ -5,16 +5,18 @@ import {axiosInstance} from '../axios';
 function Cards(props) {
     
     const [people, setPeople] = useState([]);
-    const [Id,setId]=useState();
+    const [Id,setId]=useState('');
     
     useEffect(() => {
 
         async function fetchUser(){
             const request =  await axiosInstance.get(`/users/${props.email}`);
+            console.log('user id',request.data._id);
             setId(request.data._id);
         }
         async function fetchData(){
             const request = await axiosInstance.get('/users');     
+            console.log('fetchData',request.data);
             setPeople(request.data); 
         }
         fetchUser();
@@ -27,7 +29,12 @@ function Cards(props) {
                 const request = await axiosInstance.post(`/matchlist/${Id}`,{
                      _id:personId
                  });
-                }
+
+            console.log('successfully added the match ',request);
+          }
+          else{
+              console.log(direction,' , ',Id);
+          }
         }
         swipe(direction,person._id,Id);
    }

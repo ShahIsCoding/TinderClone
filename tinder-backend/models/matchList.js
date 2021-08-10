@@ -10,6 +10,8 @@ const matchList = new Schema({
     matches:[{
         type: ObjectId,
         ref:'User'
+    },{
+        timestamp:true
     }]    
     
 });

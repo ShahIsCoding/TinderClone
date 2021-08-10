@@ -3,16 +3,17 @@ var User = require('../models/UserSchema');
 var router = express.Router();
 
 /* GET users listing. */
-router.get('/', (req, res, next) => {
+router.route('/')
+.get((req, res, next) => {
   User.find({})
   .then((user) =>{
-    res.statusCode = 200;
+    res.stusCode = 200;
     res.setHeader('Content-Type','application/json');
     res.json(user);
   },(err)=>next(err))
   .catch((err) => next(err));
 })
-.post('/', (req, res, next) => {
+.post((req, res, next) => {
   User.findOne({email:req.body.email})
   .then((user) => {
     console.log(JSON.stringify( user));
@@ -30,7 +31,7 @@ router.get('/', (req, res, next) => {
   },(err) => next(err))  
   .catch((err) => next(err));
 })
-.delete('/', (req, res, next) => {
+.delete((req, res, next) => {
   User.remove()
   .then((user) =>{
     res.statusCode = 200;
@@ -40,7 +41,9 @@ router.get('/', (req, res, next) => {
   .catch((err) => next(err));
 });
 
-router.get('/:emailId',(req,res,next) =>{
+// /:EMAILID
+router.route('/:emailId')
+.get((req,res,next) =>{
     User.findOne({email:req.params.emailId})
     .then((user) => {
       res.statusCode = 200;

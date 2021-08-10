@@ -30,20 +30,23 @@ function UserAuth(props) {
         props.handleUser(email);
         (page)?
             axiosInstance.post('/users',data)
-            .then((resp) => {})
+            .then((resp) => { 
+                console.log(resp);
+                history.replace('/cards');
+            })
             .catch((err) => {
                 alert(err.response.data);
             })
         :
-            axiosInstance.post('/users/user',data)
+            axiosInstance.get(`/users/${email}`)
             .then((resp) => {
-                var response = resp.data[0];
-                props.handleUser(response.email);                
+                console.log(resp);             
+                history.replace('/cards');
             })
             .catch((err) => {
                console.log(err);
             });
-            history.replace('/cards');
+           
     }
     return (
         <div className='userAuth' >
