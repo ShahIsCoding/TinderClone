@@ -15,8 +15,7 @@ function Cards(props) {
             console.log('fetchData',request.data);
             setPeople(request.data); 
         }
-        // fetchUser();
-        fetchData();
+         fetchData();
     },[]);
     
     const swiped = (direction,person,Id) =>{

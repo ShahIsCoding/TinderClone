@@ -7,7 +7,9 @@
     padding: 25px;
     height: 70px;
     border-bottom: 1px solid #fafafa;
-
+    &:hover{
+        background-color: rgba(253,58,112,0.14);
+    }
     &__details{
         flex:1;
         &>p{

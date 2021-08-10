@@ -25,13 +25,13 @@ function MainComponent() {
     return (
         <div>
              <Switch>
-                <Route path='/chat/:person'>
+                <Route path='/chat/:matchId'>
                     <Header backButton='/chat'/>
                     <ChatScreen />
                 </Route>
                 <Route path='/chat'>
                     <Header backButton='/cards'/>
-                    <Chats />
+                    <Chats id={id}/>
                 </Route>
                 <Route path='/profile'> 
                     <Header />
