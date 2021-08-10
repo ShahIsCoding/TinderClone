@@ -8,6 +8,7 @@ function UserAuth(props) {
     const [firstname, setfirstName] = useState('')
     const [lastname, setlastName] = useState('')
     const [email, setEmail] = useState('');
+    const [password,setpassword] = useState('');
     const [imgUrl, setimgUrl] = useState('');
     const [age,setAge]= useState(16);
     const [gender,setGender]= useState('Male');
@@ -18,7 +19,7 @@ function UserAuth(props) {
 
     const handleSubmit = (e) =>{
         e.preventDefault();
-
+        console.log('email',email);
         const data = {
             firstname:firstname,
             lastname:lastname,
@@ -27,11 +28,11 @@ function UserAuth(props) {
             age:age,
             gender:gender
         };
-        var id ='61121b45cc35153b1cce9fc8';
+
         (page)?
             axiosInstance.post('/users',data)
             .then((resp) => { 
-                id = resp.data._id;
+                props.handleUser(resp.data._id);
                 history.replace('/cards');
             })
             .catch((err) => {
@@ -39,14 +40,13 @@ function UserAuth(props) {
             })
         :
             axiosInstance.get(`/users/${email}`)
-            .then((resp) => {
-                id = resp.data._id;          
+            .then((resp) => {  
+                props.handleUser(resp.data._id);    
                 history.replace('/cards');
             })
             .catch((err) => {
                console.log(err);
-            });
-            props.handleUser(id);           
+            });       
     }
     return (
         <div className='userAuth' >
@@ -61,13 +61,13 @@ function UserAuth(props) {
                 </div>
                 <div className='userAuth__choicepage--right'>
                     {page?
-                        <h2>Log In to Tinder</h2>
+                         <h2>Sign Up In to Tinder</h2>                        
                     :
-                    <h2>SignIn In to Tinder</h2>
+                        <h2>Log In to Tinder</h2>
                     }
                     <div className='right__btns'>
-                        <Button className={page? 'pnk btn__login' : 'wht btn__login' }  onClick={() => setPage(true)} >LogIn</Button>
-                        <Button className={(page)? 'wht btn__signup' : 'pnk btn__signup'} onClick={() => setPage(false)}  >Signup</Button>
+                        <Button className={page? 'pnk btn__login' : 'wht btn__login' }  onClick={() => setPage(true)} >Signup</Button>
+                        <Button className={(page)? 'wht btn__signup' : 'pnk btn__signup'} onClick={() => setPage(false)}  >LogIn</Button>
                     </div>
                     <hr/>
                     <Form onSubmit={handleSubmit}>
@@ -97,6 +97,10 @@ function UserAuth(props) {
                                         <Input type='number' name='age' value={age} onChange={(e)=>setAge(e.target.value)} placeholder='16+' />
                                     </FormGroup>
                                 </div>
+                                <FormGroup  className='right__input'>
+                                        <Label>imgUrl</Label>
+                                        <Input  type='text' name='imgUrl' value={imgUrl} onChange={(e)=>setimgUrl(e.target.value)} placeholder='Enter the imgUrl' />
+                                    </FormGroup>
                             </div>                 
                         :null
                         }<FormGroup className='right__input'>
@@ -105,7 +109,7 @@ function UserAuth(props) {
                         </FormGroup>
                         <FormGroup  className='right__input'>
                             <Label>password</Label>
-                            <Input  type='text' name='imgUrl' value={imgUrl} onChange={(e)=>setimgUrl(e.target.value)} placeholder='Enter the imgUrl' />
+                            <Input  type='password' name='password' value={password} onChange={(e)=>setpassword(e.target.value)} placeholder='Enter the imgUrl' />
                         </FormGroup>
                         <Button type='submit' className='wht'>Let's Go</Button>
                     </Form>
