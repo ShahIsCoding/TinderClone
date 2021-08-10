@@ -10,6 +10,7 @@ function Profile(props) {
     }
     return (
         <div>
+            <h1>{props.id}</h1>
             <button onClick={logout}>LOGOUT</button>
         </div>
     )

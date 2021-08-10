@@ -16,10 +16,10 @@ import Profile from './Profile';
 
 function MainComponent() {
 
-    const [email,setEmail] = useState('');
+    const [id,setId] = useState('');
 
-    const handleUser = (email) =>{
-        setEmail(email);
+    const handleUser = (id) =>{
+        setId(id);
     }
 
     return (
@@ -35,11 +35,11 @@ function MainComponent() {
                 </Route>
                 <Route path='/profile'> 
                     <Header />
-                    <Profile handleUser={handleUser} />
+                    <Profile handleUser={handleUser} id={id}/>
                 </Route>
                 <Route path='/cards'>
                     <Header />
-                    <Cards email={email}/>
+                    <Cards id={id}/>
                     <SwipeButtons />
                 </Route>
                 <Route path='/'>

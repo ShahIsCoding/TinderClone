@@ -9,17 +9,13 @@ function Cards(props) {
     
     useEffect(() => {
 
-        async function fetchUser(){
-            const request =  await axiosInstance.get(`/users/${props.email}`);
-            console.log('user id',request.data._id);
-            setId(request.data._id);
-        }
+        setId(props.id)
         async function fetchData(){
             const request = await axiosInstance.get('/users');     
             console.log('fetchData',request.data);
             setPeople(request.data); 
         }
-        fetchUser();
+        // fetchUser();
         fetchData();
     },[]);
     

@@ -27,11 +27,11 @@ function UserAuth(props) {
             age:age,
             gender:gender
         };
-        props.handleUser(email);
+        var id ='61121b45cc35153b1cce9fc8';
         (page)?
             axiosInstance.post('/users',data)
             .then((resp) => { 
-                console.log(resp);
+                id = resp.data._id;
                 history.replace('/cards');
             })
             .catch((err) => {
@@ -40,13 +40,13 @@ function UserAuth(props) {
         :
             axiosInstance.get(`/users/${email}`)
             .then((resp) => {
-                console.log(resp);             
+                id = resp.data._id;          
                 history.replace('/cards');
             })
             .catch((err) => {
                console.log(err);
             });
-           
+            props.handleUser(id);           
     }
     return (
         <div className='userAuth' >
