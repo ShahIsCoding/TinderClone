@@ -12,7 +12,7 @@ router.route('/:userId')
         res.setHeader('Content-Type','application/json');
         res.json(list);
     },(err)=> next(err))
-    .catch((err)=> next(err));
+    .catch((err)=> next(err))
 })
 .post((req,res,next) =>{
     MatchList.findOne({user:req.params.userId})
@@ -35,7 +35,7 @@ router.route('/:userId')
             res.json(user);
         }
     },(err)=> next(err))
-    .catch((err)=> next(err));
+    .catch((err)=> next(err))
 })
 .delete((req,res,next) =>{
     MatchList.remove()
@@ -46,4 +46,24 @@ router.route('/:userId')
     },(err) => next(err))
     .catch((err) => next(err));
 });
+
+router.route('/:userId/:matchId')
+.delete((req,res,next) =>{
+    MatchList.findOne({user:req.params.userId})
+    .then((user) =>{
+        var idx = user.matches.indexOf(req.params.matchId);
+        user.matches.splice(idx,1);
+        user.save();
+        MatchList.find({user:req.params.userId})
+        .populate('user')
+        .populate('matches')
+        .then((list) =>{
+            res.statusCode = 200;
+            res.setHeader('Content-Type','application/json');
+            res.json(list);
+        })
+    }, err => next(err))
+    .catch((err) => next(err));
+});
+
 module.exports = router;
