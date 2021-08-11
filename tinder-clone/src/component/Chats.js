@@ -6,7 +6,8 @@ import HighlightOffIcon from '@material-ui/icons/HighlightOff';
 function Chats(props) {
 
     const [matches,setMatches] = useState([]);
-    const [Id, setId] = useState('');  
+    const [Id, setId] = useState('');
+    const [trigger,setTrigger] = useState(0);  
 
     useEffect(() => {
         console.log('Id : ',props.id);
@@ -20,13 +21,15 @@ function Chats(props) {
             .catch((err) => console.log(err));
         }
         fetchMatches(props.id);
-    }, []);
+    }, [trigger]);
 
 
     const removeMatches = (userId,matchId) =>{
            console.log(userId,'  ',matchId);
             axiosInstance.delete(`/matchlist/${userId}/${matchId}`)
-            .then((matches) => console.log('matches',matches.data))
+            .then((matches) => {
+                setTrigger(() =>trigger+1);    
+            })
             .catch(err => console.log(err));
         
     }
@@ -43,7 +46,7 @@ function Chats(props) {
                                     id={match._id}
                                 />
                                 <IconButton>
-                                    <HighlightOffIcon  onClick={removeMatches(Id,match._id)}/>
+                                    <HighlightOffIcon  onClick={() => removeMatches(Id,match._id)}/>
                                 </IconButton>
                             </div>
                 })

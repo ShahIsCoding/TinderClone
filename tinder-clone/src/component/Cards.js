@@ -41,7 +41,9 @@ function Cards(props) {
     return (
         <div className='tinderCards'>
             <div className='tinderCards__cardContainer'>      
-            {people.map((person) =>{
+            {people
+            .filter((match)=> match._id !== Id)
+            .map((person) =>{
                 return(
                 <TinderCard
                     className='swipe'

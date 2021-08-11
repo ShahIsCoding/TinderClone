@@ -1,5 +1,6 @@
 var express = require('express');
 var User = require('../models/UserSchema');
+var MatchList = require('../models/matchList');
 var router = express.Router();
 
 /* GET users listing. */
@@ -16,7 +17,6 @@ router.route('/')
 .post((req, res, next) => {
   User.findOne({email:req.body.email})
   .then((user) => {
-    console.log(JSON.stringify( user));
     if(user===null){
       User.create(req.body)
       .then((user) =>{
@@ -52,4 +52,5 @@ router.route('/:emailId')
     },(err)=> next(err))
     .catch((err) => next(err));
 });
+
 module.exports = router;
