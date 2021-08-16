@@ -20,7 +20,7 @@ const verifyCallback = (username,password,done) => {
 };
 
 const stratergy = new LocalStratergy(customFields,verifyCallback);
-exports.local = passport.use(stratergy);
+passport.use(stratergy);
 
 passport.serializeUser((user,done) =>{
     done(null,user.id);
@@ -34,10 +34,12 @@ passport.deserializeUser((userId,done) =>{
 });
 
 exports.isUser = (req,res,next) =>{
-     if(req.session.user === null){
-        err = new Error('YOU ARE NOT LOGGED IN');
-        next(err);
+    if(req.session.user === 'authorized'){
+        next();
     }
-    console.log(req.session.user);
-    next();
+    else{
+        res.statusCode = 401;
+        res.send(`You are Not Authenticated  ${req.session.user}`);
+        req.session.destroy();
+    }
 }

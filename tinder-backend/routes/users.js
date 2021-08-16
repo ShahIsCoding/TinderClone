@@ -17,7 +17,7 @@ userRouter.route('/')
   },(err)=>next(err))
   .catch((err) => next(err));
 })
-.delete((req, res, next) => {
+.delete(isUser,(req, res, next) => {
   User.remove()
   .then((user) =>{
     res.statusCode = 200;
@@ -29,7 +29,7 @@ userRouter.route('/')
 
 // /:EMAILID
 userRouter.route('/:emailId')
-.get((req,res,next) =>{
+.get(isUser,(req,res,next) =>{
     User.findOne({email:req.params.emailId})
     .then((user) => {
       res.statusCode = 200;
@@ -38,7 +38,7 @@ userRouter.route('/:emailId')
     },(err)=> next(err))
     .catch((err) => next(err));
 })
-.delete((req,res,next)=>{
+.delete(isUser,(req,res,next)=>{
   User.findOneAndDelete({email:req.params.emailId})
   .then((user) => {
     res.statusCode = 200;
@@ -61,47 +61,41 @@ userRouter.post('/register',(req,res,next) =>{
       };
       User.create(req.body)
       .then((user) =>{
-        req.session.user = user;        
+        req.session.user = 'authorized';        
         res.statusCode = 200;
         res.setHeader('Content-Type','application/json');
         res.json(user);
       },(err) => next(err))
     }
     else{
-    res.statusCode = 400;
-    res.send('User Already exists');}
+      res.statusCode = 400;
+      res.send('User Already exists');
+    }
   },(err) => next(err))  
   .catch((err) => next(err));
 });
 
 userRouter.post('/signin',(req,res,next) =>{
   passport.authenticate('local',(err,user,info) =>{
-    console.log(err,user,info);
-    if(err) next(err);
-    if(!user) {
+    if(user) {
+      req.session.user = 'authorized';
+      res.statusCode = 200;
+      res.setHeader('Content-Type','application/json');
+      res.json(user);  
+    }
+    else{
+      res.clearCookie('tinder-session');
+      req.session.destroy();
       res.statusCode = 401;
       res.setHeader('Content-Type','application/json');
-      res.json({success:false,status:'LogIn Failure'});
+      res.json(user);
     }
-    req.session.user = 'Authenticated';
-    res.statusCode = 200;
-    res.setHeader('Content-Type','application/json');
-    res.json({success:true,status:'LogIn Succes',user:user});  
   })(req,res,next);
 });
-userRouter.get('/logout',(req,res,next) =>{
-  if(req.session){
-    console.log(req.session);
-    req.session.user = null;
+
+userRouter.get('/logout',isUser,(req,res,next) =>{
     req.session.destroy();
-    res.clearCookie('tinder-session');
-    res.redirect('/');
-  }
-  else{
-    var err = new Error('You are not logged In!');
-    err.status = 403;
-    next(err);
-  }
+    res.clearCookie();
 });
 
 module.exports = userRouter;

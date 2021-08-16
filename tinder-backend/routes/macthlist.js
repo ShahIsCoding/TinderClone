@@ -1,9 +1,10 @@
 var express = require('express');
 var MatchList = require('../models/matchList');
 var router = express.Router();
+var isUser = require('../authentication').isUser;
 
 router.route('/:userId')
-.get((req,res,next) =>{
+.get(isUser,(req,res,next) =>{
     MatchList.find({user:req.params.userId})
     .populate('user')
     .populate('matches')
@@ -14,7 +15,7 @@ router.route('/:userId')
     },(err)=> next(err))
     .catch((err)=> next(err))
 })
-.post((req,res,next) =>{
+.post(isUser,(req,res,next) =>{
     MatchList.findOne({user:req.params.userId})
     .then((user) =>{
         if(user === null) {     
@@ -37,7 +38,7 @@ router.route('/:userId')
     },(err)=> next(err))
     .catch((err)=> next(err))
 })
-.delete((req,res,next) =>{
+.delete(isUser,(req,res,next) =>{
     MatchList.remove()
     .then((user) => {
         res.statusCode = 200;
@@ -48,7 +49,7 @@ router.route('/:userId')
 });
 
 router.route('/:userId/:matchId')
-.delete((req,res,next) =>{
+.delete(isUser,(req,res,next) =>{
     MatchList.findOne({user:req.params.userId})
     .then((user) =>{
         var idx = user.matches.indexOf(req.params.matchId);

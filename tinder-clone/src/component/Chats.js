@@ -37,13 +37,14 @@ function Chats(props) {
         <div className='chats'>
             {
                 matches.map((match) =>{
-                    return  <div className='chat'>
+                    return  <div className='chat' > 
                                 <Chat 
                                     name={match.firstname +' '+match.lastname}
                                     message='message'
                                     timestamp="time taken"
                                     profilePic = {match.imgUrl}
                                     id={match._id}
+                                    key = {match._id}
                                 />
                                 <IconButton>
                                     <HighlightOffIcon  onClick={() => removeMatches(Id,match._id)}/>
