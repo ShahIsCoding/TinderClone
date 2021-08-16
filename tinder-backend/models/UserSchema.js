@@ -15,6 +15,14 @@ var UserSchema = new Schema({
         required:true,
         unique:true
     },
+    password:{
+        hash:{
+            type:String,
+        },
+        salt:{
+            type:String
+        }
+    },
     imgUrl:{
         type:String
     },

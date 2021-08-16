@@ -24,24 +24,30 @@ function UserAuth(props) {
             firstname:firstname,
             lastname:lastname,
             email:email,
+            password:password,
             imgUrl:imgUrl,
             age:age,
             gender:gender
         };
 
         (page)?
-            axiosInstance.post('/users',data)
+            axiosInstance.post('/users/register',data)
             .then((resp) => { 
+                console.log(resp);
                 props.handleUser(resp.data._id);
                 history.replace('/cards');
             })
             .catch((err) => {
-                alert(err.response.data);
+                console.log(err);
             })
         :
-            axiosInstance.get(`/users/${email}`)
-            .then((resp) => {  
-                props.handleUser(resp.data._id);    
+            axiosInstance.post(`/users/signin`,{
+                email:email,
+                password:password
+            })
+            .then((resp) => { 
+                console.log(resp);
+                props.handleUser(resp.data._id);
                 history.replace('/cards');
             })
             .catch((err) => {
