@@ -2,6 +2,8 @@ const passport = require('passport');
 const LocalStratergy = require('passport-local').Strategy;
 const User = require('./models/UserSchema');
 const isValidPassword = require('./lib/passwordsUtils').isValidPassword;
+const jwt = require('jsonwebtoken');
+require('dotenv').config();
 
 const customFields ={
     usernameField:'email',
@@ -11,6 +13,7 @@ const customFields ={
 const verifyCallback = (username,password,done) => {
     User.findOne({email:username})
     .then((user) =>{
+
         if(!user) return done(null,false);  
         const isValid = isValidPassword(password,user.password.hash,user.password.salt);
         if(isValid) done(null,user);
@@ -33,13 +36,35 @@ passport.deserializeUser((userId,done) =>{
     .catch(err => done(err))
 });
 
+
+function getJwt__token(playload){
+    var token =  jwt.sign({_id:playload},process.env.SECRETKEY,{
+        expiresIn: 60 * 60 *24 
+    });
+    return token;
+}
+
+module.exports.getJwt__token = getJwt__token;
+
 exports.isUser = (req,res,next) =>{
-    if(req.session.user === 'authorized'){
-        next();
+    var token = req.cookies.token;
+    if(token){
+        jwt.verify(token,process.env.SECRETKEY,(err,decoded)=>{
+            if(err){
+                res.statusCode = 400;
+                res.setHeader('Content-Type','application/json');
+                res.json({err:'User Not Logged In'});
+            }
+            if(decoded){
+                req.userId = decoded._id
+            }
+        });
     }
-    else{
-        res.statusCode = 401;
-        res.send(`You are Not Authenticated  ${req.session.user}`);
-        req.session.destroy();
-    }
+    else {
+            res.statusCode = 400;
+            res.setHeader('Content-Type','application/json');
+            res.json({err:'User Not Logged In'});
+        }
+
+    next();
 }

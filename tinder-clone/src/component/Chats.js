@@ -14,8 +14,9 @@ function Chats(props) {
         setId(props.id);
         async function fetchMatches(Id){
             console.log('FETCH MATCHES');
-            axiosInstance.get(`/matchlist/${Id}`)
+            axiosInstance.get(`/matchlist/`)
             .then((req) =>{
+                console.log(req.data);
                 setMatches(req.data[0].matches)
             })
             .catch((err) => console.log(err));
@@ -26,7 +27,7 @@ function Chats(props) {
 
     const removeMatches = (userId,matchId) =>{
            console.log(userId,'  ',matchId);
-            axiosInstance.delete(`/matchlist/${userId}/${matchId}`)
+            axiosInstance.delete(`/matchlist/${matchId}`)
             .then((matches) => {
                 setTrigger(() =>trigger+1);    
             })
@@ -37,14 +38,14 @@ function Chats(props) {
         <div className='chats'>
             {
                 matches.map((match) =>{
-                    return  <div className='chat' > 
+                    return  <div className='chat'                                     key = {match._id}> 
                                 <Chat 
                                     name={match.firstname +' '+match.lastname}
                                     message='message'
                                     timestamp="time taken"
                                     profilePic = {match.imgUrl}
                                     id={match._id}
-                                    key = {match._id}
+
                                 />
                                 <IconButton>
                                     <HighlightOffIcon  onClick={() => removeMatches(Id,match._id)}/>

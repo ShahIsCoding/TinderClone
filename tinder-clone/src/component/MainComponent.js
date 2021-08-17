@@ -35,7 +35,7 @@ function MainComponent() {
                 </Route>
                 <Route path='/profile'> 
                     <Header />
-                    <Profile handleUser={handleUser} id={id}/>
+                    <Profile handleUser={handleUser}/>
                 </Route>
                 <Route path='/cards'>
                     <Header />

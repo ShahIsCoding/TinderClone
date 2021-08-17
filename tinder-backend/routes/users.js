@@ -5,6 +5,8 @@ var User = require('../models/UserSchema');
 var genPassword = require('../lib/passwordsUtils').genPassword;
 var passport = require('passport');
 var isUser = require('../authentication').isUser;
+var getJwt__token = require('../authentication').getJwt__token;
+require('dotenv').config();
 
 /* GET users listing. */
 userRouter.route('/')
@@ -28,9 +30,9 @@ userRouter.route('/')
 });
 
 // /:EMAILID
-userRouter.route('/:emailId')
+userRouter.route('/user')
 .get(isUser,(req,res,next) =>{
-    User.findOne({email:req.params.emailId})
+    User.findOne({_id:req.userId})
     .then((user) => {
       res.statusCode = 200;
       res.setHeader('Content-Type','application/json');
@@ -39,7 +41,7 @@ userRouter.route('/:emailId')
     .catch((err) => next(err));
 })
 .delete(isUser,(req,res,next)=>{
-  User.findOneAndDelete({email:req.params.emailId})
+  User.findOneAndDelete({_id:req.userId})
   .then((user) => {
     res.statusCode = 200;
     res.setHeader('Content-Type','application/json');
@@ -78,24 +80,25 @@ userRouter.post('/register',(req,res,next) =>{
 userRouter.post('/signin',(req,res,next) =>{
   passport.authenticate('local',(err,user,info) =>{
     if(user) {
-      req.session.user = 'authorized';
+      var token  = getJwt__token(user._id);
       res.statusCode = 200;
       res.setHeader('Content-Type','application/json');
+      res.cookie('token',token,{httpOnly:true});
       res.json(user);  
     }
     else{
-      res.clearCookie('tinder-session');
-      req.session.destroy();
+      res.clearCookie('token');
       res.statusCode = 401;
       res.setHeader('Content-Type','application/json');
-      res.json(user);
+      res.json({auth:false,user:user});
     }
   })(req,res,next);
 });
 
 userRouter.get('/logout',isUser,(req,res,next) =>{
-    req.session.destroy();
-    res.clearCookie();
+    res.clearCookie('token', {httpOnly:true});
+    res.status(200)
+        .sendMessage('You are Logged Out');
 });
 
 module.exports = userRouter;

@@ -37,25 +37,14 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use(session({
-  name:'tinder-session',
-  secret:process.env.session__SECRETKEY,
-  resave:false,
-  saveUninitialized:true,
-  store:new FileStore(),
-  cookie:{
-      expires:1000 *60 *60 *24
-    }
-}));
-
 app.use(passport.initialize());
-app.use(passport.session());
 require('./authentication');
 
 var corsOptions = {
   origin:'http://localhost:3000',
   credentials:true,
   }
+
 app.use(cors(corsOptions));
 
 app.use('/', indexRouter);
