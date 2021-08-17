@@ -21,10 +21,9 @@ function Cards(props) {
     const swiped = (direction,person,Id) =>{
         async function  swipe(direction,personId,Id){
             if((direction === 'right') && (Id != null)){
-                const request = await axiosInstance.post(`/matchlist/${Id}`,{
+                const request = await axiosInstance.post(`/matchlist`,{
                      _id:personId
                  });
-
             console.log('successfully added the match ',request);
           }
           else{
@@ -47,7 +46,7 @@ function Cards(props) {
                 return(
                 <TinderCard
                     className='swipe'
-                    key={person.name}
+                    key={person._id}
                     preventSwipe={["up","down"]}
                     onSwipe={(dir) => swiped(dir,person,Id)}
                     onCardLeftScreen={()=> outOfFrame(person.firstname +' '+ person.lastname)}

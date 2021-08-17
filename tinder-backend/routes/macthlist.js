@@ -3,9 +3,10 @@ var MatchList = require('../models/matchList');
 var router = express.Router();
 var isUser = require('../authentication').isUser;
 
-router.route('/:userId')
+router.route('/')
 .get(isUser,(req,res,next) =>{
-    MatchList.find({user:req.params.userId})
+    console.log(req.userId);
+    MatchList.find({user:req.userId})
     .populate('user')
     .populate('matches')
     .then((list) =>{
@@ -16,10 +17,10 @@ router.route('/:userId')
     .catch((err)=> next(err))
 })
 .post(isUser,(req,res,next) =>{
-    MatchList.findOne({user:req.params.userId})
+    MatchList.findOne({user:req.userId})
     .then((user) =>{
         if(user === null) {     
-            MatchList.create({user:req.params.userId})
+            MatchList.create({user:req.userId})
             .then((user) =>{
                 user.matches.push(req.body._id);
                 user.save();
@@ -29,7 +30,8 @@ router.route('/:userId')
             },err => next(err))
         }
         else{
-            user.matches.push(req.body._id);
+            if(user.matches.indexOf(req.body._id)<0)
+                user.matches.push(req.body._id);
             user.save();
             res.statusCode = 200;
             res.setHeader('Content-Type','application/json')
@@ -48,14 +50,14 @@ router.route('/:userId')
     .catch((err) => next(err));
 });
 
-router.route('/:userId/:matchId')
+router.route('/:matchId')
 .delete(isUser,(req,res,next) =>{
-    MatchList.findOne({user:req.params.userId})
+    MatchList.findOne({user:req.userId})
     .then((user) =>{
         var idx = user.matches.indexOf(req.params.matchId);
         user.matches.splice(idx,1);
         user.save();
-        MatchList.find({user:req.params.userId})
+        MatchList.find({user:req.userId})
         .populate('user')
         .populate('matches')
         .then((list) =>{

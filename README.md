@@ -5,11 +5,11 @@ Starting the Mern devs with Tinder development.
  * Creating a new user and login with the password
  * Swiping feature if swiped right the person is saved to chat 
  * Removing a match from users
+ * Authentications 
+      1. use Auth using passport jwt
  
 ### Function to be Added
     * Authentications 
-      1. use Auth using passport jwt
-      2. 2 step verifications
       3. oAuth feature
     * Making a Chat 
     * Making A profile

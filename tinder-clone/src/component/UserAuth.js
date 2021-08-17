@@ -30,8 +30,8 @@ function UserAuth(props) {
             gender:gender
         };
 
-        (page)?
-            axiosInstance.post('/users/register',data)
+        async function registerUser(){
+            await axiosInstance.post('/users/register',data)
             .then((resp) => { 
                 console.log(resp);
                 props.handleUser(resp.data._id);
@@ -40,8 +40,9 @@ function UserAuth(props) {
             .catch((err) => {
                 console.log(err);
             })
-        :
-            axiosInstance.post(`/users/signin`,{
+        }
+        async function signinUser(){
+            await axiosInstance.post(`/users/signin`,{
                 email:email,
                 password:password
             })
@@ -52,7 +53,9 @@ function UserAuth(props) {
             })
             .catch((err) => {
                console.log(err);
-            });       
+            })
+        }
+        (page)? registerUser() : signinUser()
     }
     return (
         <div className='userAuth' >
