@@ -1,8 +1,14 @@
-@import url('https://fonts.googleapis.com/css?family=Proxima+Nova');
-*{
-    font-family: 'proxima-nova', sans-serif;
+@mixin tinderText {
+    background-image: linear-gradient(to right top,$tinder-orange,$tinder-pink);
+    background-clip: text;
+    -webkit-background-clip: text;
+    color: transparent;
 }
-a{
-    text-decoration: none;
-    color: inherit;
+*{
+    box-sizing: border-box;
+    font-family: 'Raleway',sans-serif;
+}
+label{
+    outline: none;
+    border: none;
 }

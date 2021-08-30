@@ -1,0 +1,53 @@
+.landingPage{
+    background-image: linear-gradient(to right top,$tinder-orange,$tinder-pink);
+    width: 100vw;
+    height: 100vh;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.mainBox{
+    width: 50vmin;
+    height: 50vmin;
+    background-color: rgba(white,0.69);
+
+    display: flex;
+    flex-flow: nowrap column;
+    justify-content: space-between;
+    align-items: center;
+    padding: 2.5vmax;
+    box-sizing: border-box;
+
+    font-weight: 400;
+    font-size: 3.5vmin;
+
+    border-radius: 10px;
+    &__title{
+        @include tinderText;
+        font-family: 'Raleway',sans-serif; 
+    }
+    &__logo{
+        width: 15vmin;
+        &:hover{
+            cursor: pointer;
+        }
+    }
+    &__btn{
+        border: none;
+        outline: none;
+        background-color: transparent;
+        color: transparent;
+        background-image: linear-gradient(to right top,$tinder-orange,$tinder-pink);
+        background-clip: text;
+        -webkit-background-clip: text;
+        font-size: 3.5vmin;
+        padding: 10px;
+
+        &:hover{
+            cursor: pointer;
+            border: 2px solid $tinder-pink;
+        }
+    }
+
+}
