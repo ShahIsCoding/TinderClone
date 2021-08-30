@@ -18,16 +18,16 @@ function Cards(props) {
          fetchData();
     },[]);
     
-    const swiped = (direction,person,Id) =>{
-        async function  swipe(direction,personId,Id){
-            if((direction === 'right') && (Id != null)){
+    const swiped = (direction,person) =>{
+        async function  swipe(direction,personId){
+            if(direction === 'right'){
                 const request = await axiosInstance.post(`/matchlist`,{
                      _id:personId
                  });
             console.log('successfully added the match ',request);
           }
           else{
-              console.log(direction,' , ',Id);
+              console.log(direction);
           }
         }
         swipe(direction,person._id,Id);
@@ -41,14 +41,13 @@ function Cards(props) {
         <div className='tinderCards'>
             <div className='tinderCards__cardContainer'>      
             {people
-            .filter((match)=> match._id !== Id)
             .map((person) =>{
                 return(
                 <TinderCard
                     className='swipe'
                     key={person._id}
                     preventSwipe={["up","down"]}
-                    onSwipe={(dir) => swiped(dir,person,Id)}
+                    onSwipe={(dir) => swiped(dir,person)}
                     onCardLeftScreen={()=> outOfFrame(person.firstname +' '+ person.lastname)}
                 >
                     <div    style={{backgroundImage:`url(${person.imgUrl})`}}

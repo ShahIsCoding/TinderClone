@@ -13,6 +13,7 @@ userRouter.route('/')
 .get(isUser,(req, res, next) => {
   User.find({})
   .then((user) =>{
+    console.log(req);
     res.stusCode = 200;
     res.setHeader('Content-Type','application/json');
     res.json(user);
@@ -62,16 +63,19 @@ userRouter.post('/register',(req,res,next) =>{
         hash:hash
       };
       User.create(req.body)
-      .then((user) =>{
-        req.session.user = 'authorized';        
+      .then((user) =>{      
+        var token  = getJwt__token(user._id);
         res.statusCode = 200;
         res.setHeader('Content-Type','application/json');
+        res.cookie('token',token,{httpOnly:true});
         res.json(user);
       },(err) => next(err))
+      .catch((err) => next(err));
     }
     else{
       res.statusCode = 400;
-      res.send('User Already exists');
+      res.setHeader('Content-Type','application/json');
+      res.json({err:'User Already exists'});
     }
   },(err) => next(err))  
   .catch((err) => next(err));
@@ -80,6 +84,7 @@ userRouter.post('/register',(req,res,next) =>{
 userRouter.post('/signin',(req,res,next) =>{
   passport.authenticate('local',(err,user,info) =>{
     if(user) {
+      console.log(req.user);
       var token  = getJwt__token(user._id);
       res.statusCode = 200;
       res.setHeader('Content-Type','application/json');
@@ -98,7 +103,8 @@ userRouter.post('/signin',(req,res,next) =>{
 userRouter.get('/logout',isUser,(req,res,next) =>{
     res.clearCookie('token', {httpOnly:true});
     res.status(200)
-        .sendMessage('You are Logged Out');
+    res.setHeader('Content-Type','application/json');
+    res.json({message:'You are Logged Out'});
 });
 
 module.exports = userRouter;

@@ -12,15 +12,10 @@ import SwipeButtons from './SwipeButtons';
 import Chats from './Chats';
 import UserAuth from './UserAuth';
 import Profile from './Profile';
+import LandingPage from './LandingPage';
 
 
 function MainComponent() {
-
-    const [id,setId] = useState('');
-
-    const handleUser = (id) =>{
-        setId(id);
-    }
 
     return (
         <div>
@@ -31,20 +26,24 @@ function MainComponent() {
                 </Route>
                 <Route path='/chat'>
                     <Header backButton='/cards'/>
-                    <Chats id={id}/>
+                    <Chats/>
                 </Route>
                 <Route path='/profile'> 
                     <Header />
-                    <Profile handleUser={handleUser}/>
+                    <Profile/>
                 </Route>
                 <Route path='/cards'>
                     <Header />
-                    <Cards id={id}/>
+                    <Cards />
                     <SwipeButtons />
                 </Route>
-                <Route path='/'>
-                    <UserAuth handleUser={handleUser} />
+                <Route path='/userAuth'>
+                    <UserAuth />
                 </Route>
+                <Route path='/'>
+                    <LandingPage />    
+                </Route>
+                
             </Switch>
         </div>
     )

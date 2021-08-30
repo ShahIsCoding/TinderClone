@@ -11,12 +11,12 @@ function Header({backButton}) {
         <div className='header'>
             {backButton ? (
                 <IconButton onClick={() => history.replace(backButton)}>
-                <ArrowBackIosIcon className="header__icon" fontSize="large" />
+                    <ArrowBackIosIcon className="header__icon" fontSize="large" />
                 </IconButton>
             ) : (
                 <Link to='/profile'>
                     <IconButton>
-                     <PersonIcon className="header__icon" fontSize="large" />
+                        <PersonIcon className="header__icon" fontSize="large" />
                     </IconButton>   
                 </Link>
 

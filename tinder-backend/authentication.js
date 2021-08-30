@@ -1,5 +1,6 @@
 const passport = require('passport');
 const LocalStratergy = require('passport-local').Strategy;
+const GoogleTokenStrategy = require('passport-google-token').Strategy;
 const User = require('./models/UserSchema');
 const isValidPassword = require('./lib/passwordsUtils').isValidPassword;
 const jwt = require('jsonwebtoken');
@@ -13,9 +14,10 @@ const customFields ={
 const verifyCallback = (username,password,done) => {
     User.findOne({email:username})
     .then((user) =>{
-
+        console.log('USER',user);
         if(!user) return done(null,false);  
         const isValid = isValidPassword(password,user.password.hash,user.password.salt);
+        console.log('isValid',isValid);
         if(isValid) done(null,user);
         done(null,false);
     })
@@ -24,6 +26,21 @@ const verifyCallback = (username,password,done) => {
 
 const stratergy = new LocalStratergy(customFields,verifyCallback);
 passport.use(stratergy);
+
+
+// passport.use( 
+//     new GoogleTokenStrategy({
+//         clientID:process.env.clientId,
+//         clientSecret:process.env.clientSECRET
+//         },
+//         function(accessToken, refreshToken, profile, done){
+//             console.log('accessToken',accessToken);
+//             console.log('refreshToken',refreshToken);
+//             console.log('profile',profile);
+//             console.log('done',done);
+//         }
+//     )
+// );
 
 passport.serializeUser((user,done) =>{
     done(null,user.id);

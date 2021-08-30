@@ -5,8 +5,7 @@ var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 
 var mongoose = require('mongoose');
-var session = require('express-session');
-var FileStore = require('session-file-store')(session);
+
 var passport = require('passport');
 require('dotenv').config();
 var cors = require('cors');
@@ -15,8 +14,8 @@ var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var matchRouter = require('./routes/macthlist');
 
-// const connection_url = 'mongodb://localhost:27017/tinderClone';
-const connection_url = process.env.MONGODB_URL;
+ const connection_url = 'mongodb://localhost:27017/CloneTINDER';
+// const connection_url = process.env.MONGODB_URL;
 const connect = mongoose.connect(connection_url,{
   useNewUrlParser: true,
   useUnifiedTopology: true
