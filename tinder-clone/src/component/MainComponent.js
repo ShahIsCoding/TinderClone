@@ -29,7 +29,7 @@ function MainComponent() {
                     <Chats/>
                 </Route>
                 <Route path='/profile'> 
-                    <Header />
+                    <Header backButton='/cards'/>
                     <Profile/>
                 </Route>
                 <Route path='/cards'>
