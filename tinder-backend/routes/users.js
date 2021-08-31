@@ -13,10 +13,12 @@ userRouter.route('/')
 .get(isUser,(req, res, next) => {
   User.find({})
   .then((user) =>{
-    console.log(req);
+    console.log(user);
+    var USERS = user.filter((user) => user._id != req.userId) 
+    console.log(USERS);
     res.stusCode = 200;
     res.setHeader('Content-Type','application/json');
-    res.json(user);
+    res.json(USERS);
   },(err)=>next(err))
   .catch((err) => next(err));
 })
