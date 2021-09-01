@@ -13,8 +13,9 @@ var cors = require('cors');
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var matchRouter = require('./routes/macthlist');
+var chatRouter  = require('./routes/chat');
 
- const connection_url = 'mongodb://localhost:27017/CloneTINDER';
+const connection_url = 'mongodb://localhost:27017/CloneTINDER';
 // const connection_url = process.env.MONGODB_URL;
 const connect = mongoose.connect(connection_url,{
   useNewUrlParser: true,
@@ -49,7 +50,7 @@ app.use(cors(corsOptions));
 app.use('/', indexRouter);
 app.use('/matchlist',matchRouter);
 app.use('/users', usersRouter);
-
+app.use('/chats',chatRouter);
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   next(createError(404));
