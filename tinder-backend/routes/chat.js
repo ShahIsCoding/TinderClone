@@ -38,7 +38,6 @@ chatRouter.route('/:matchId')
         var classId = req.userId+' '+req.params.matchId;
         var message = req.body.message;
         var sender  = req.userId;
-        console.log(classId,'  ',message,'  ',sender);
         if(chat === null){
             Chat.create({
                 chatroomId:classId,
