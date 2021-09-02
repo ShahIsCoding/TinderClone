@@ -2,11 +2,7 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 const {ObjectId} = mongoose.Schema;
 
-var chat = new Schema({
-    chatroomId:{
-        type:String,
-        required:true
-    },
+var chatroom = new Schema({
     messages:[{
         sender:{
             type:ObjectId,
@@ -23,4 +19,4 @@ var chat = new Schema({
     }]
 });
 
-module.exports = mongoose.model('Chat',chat);
+module.exports = mongoose.model('Chatroom',chatroom);
