@@ -21,7 +21,7 @@ function Cards(props) {
     const swiped = (direction,person) =>{
         async function  swipe(direction,personId){
             if(direction === 'right'){
-                const request = await axiosInstance.post(`/matchlist`,{
+                const request = await axiosInstance.post(`/matchlist/likes`,{
                      _id:personId
                  });
             console.log('successfully added the match ',request);

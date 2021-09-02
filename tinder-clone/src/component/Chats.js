@@ -1,5 +1,5 @@
 import React,{useState,useEffect} from 'react'
-import Chat from './Chat';
+import Chat from './ChatCards';
 import {axiosInstance} from '../axios';
 import { IconButton} from '@material-ui/core';
 import HighlightOffIcon from '@material-ui/icons/HighlightOff';
@@ -12,16 +12,16 @@ function Chats(props) {
     useEffect(() => {
         console.log('Id : ',props.id);
         setId(props.id);
-        async function fetchMatches(Id){
+        async function fetchMatches(){
             console.log('FETCH MATCHES');
-            axiosInstance.get(`/matchlist/`)
+            axiosInstance.get(`/matchlist/match`)
             .then((req) =>{
                 console.log(req.data);
-                setMatches(req.data[0].matches)
+                setMatches(req.data);
             })
             .catch((err) => console.log(err));
         }
-        fetchMatches(props.id);
+        fetchMatches();
     }, [trigger]);
 
 

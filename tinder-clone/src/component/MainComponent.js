@@ -13,6 +13,7 @@ import Chats from './Chats';
 import UserAuth from './UserAuth';
 import Profile from './Profile';
 import LandingPage from './LandingPage';
+import Likes from './likes';
 
 
 function MainComponent() {
@@ -25,8 +26,12 @@ function MainComponent() {
                     <ChatScreen />
                 </Route>
                 <Route path='/chat'>
-                    <Header backButton='/cards'/>
+                    <Header backButton='/cards' card='chat'/>
                     <Chats/>
+                </Route>
+                <Route path='/likes'>
+                    <Header backButton='/cards' card='likes'/>
+                    <Likes />
                 </Route>
                 <Route path='/profile'> 
                     <Header backButton='/cards'/>
