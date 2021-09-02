@@ -8,6 +8,7 @@ router.route('/')
     console.log(req.userId);
     MatchList.find({user:req.userId})
     .populate('user')
+    .populate('likes')
     .populate('matches')
     .then((list) =>{
         res.statusCode = 200;
@@ -17,29 +18,87 @@ router.route('/')
     .catch((err)=> next(err))
 })
 .post(isUser,(req,res,next) =>{
-    MatchList.findOne({user:req.userId})
-    .then((user) =>{
-        if(user === null) {     
-            MatchList.create({user:req.userId})
-            .then((user) =>{
-                user.matches.push(req.body._id);
-                user.save();
-                res.statusCode = 200;
-                res.setHeader('Content-Type','application/json')
-                res.json(user);    
+    var userId  = req.userId;
+    var matchId = req.body._id; 
+    MatchList.findOne({user:userId})
+    .then((user) => {
+        if(user === null){
+            MatchList.create({user:userId})
+            .then((createdUser) => {
+                createdUser.likes.push(matchId);
+                createdUser.save();
+
+                MatchList.findOne({user:matchId})
+                .then((matchuser) => {
+                    if(matchuser === null){
+                        MatchList.create({user:matchId})
+                        .then((createdMatchUser) => {
+                            createdMatchUser.likes.push(userId);
+                            createdMatchUser.save();
+                        },err => next(err));
+                    }
+                    else{
+                        if( (matchuser.likes.indexOf(userId)<0) && (matchuser.matches.indexOf(userId)<0) )
+                            matchuser.likes.push(userId);
+                            matchuser.save();
+                    }
+                },err => next(err))
+
+            res.statusCode = 200;
+            res.setHeader('Content-Type','application/json');
+            res.json(createdUser);
             },err => next(err))
         }
         else{
-            if(user.matches.indexOf(req.body._id)<0)
-                user.matches.push(req.body._id);
-            user.save();
+            if( (user.likes.indexOf(matchId)<0) && (user.matches.indexOf(matchId)<0) )
+                user.likes.push(matchId);
+            
+                MatchList.findOne({user:matchId})
+                .then((matchuser) => {
+                    if(matchuser === null){
+                        MatchList.create({user:matchId})
+                        .then((createdMatchUser) => {
+                            createdMatchUser.likes.push(userId);
+                            createdMatchUser.save();
+                        },err => next(err));
+                    }
+                    else{
+                        if( (matchuser.likes.indexOf(userId)<0) && (matchuser.matches.indexOf(userId)<0) )
+                            matchuser.likes.push(userId);
+                            matchuser.save();
+                    }
+                },err => next(err));
             res.statusCode = 200;
-            res.setHeader('Content-Type','application/json')
+            res.setHeader('Content-Type','application/json');
             res.json(user);
         }
-    },(err)=> next(err))
-    .catch((err)=> next(err))
+    },err => next(err))
+    .catch(err => next(err))
 })
+// .post(isUser,(req,res,next) =>{
+//     MatchList.findOne({user:req.userId})
+//     .then((user) =>{
+//         if(user === null) {     
+//             MatchList.create({user:req.userId})
+//             .then((user) =>{
+//                 user.matches.push(req.body._id);
+//                 user.save();
+//                 res.statusCode = 200;
+//                 res.setHeader('Content-Type','application/json')
+//                 res.json(user);    
+//             },err => next(err))
+//         }
+//         else{
+//             if(user.matches.indexOf(req.body._id)<0)
+//                 user.matches.push(req.body._id);
+//             user.save();
+//             res.statusCode = 200;
+//             res.setHeader('Content-Type','application/json')
+//             res.json(user);
+//         }
+//     },(err)=> next(err))
+//     .catch((err)=> next(err))
+// })
 .delete(isUser,(req,res,next) =>{
     MatchList.remove()
     .then((user) => {

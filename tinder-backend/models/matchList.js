@@ -7,6 +7,14 @@ const matchList = new Schema({
         type: ObjectId,
         ref:'User'
     },
+    likes:[
+        {
+            type: ObjectId,
+            ref:'User'   
+        },{
+            timestamp:true
+        }
+    ],
     matches:[{
         type: ObjectId,
         ref:'User'
