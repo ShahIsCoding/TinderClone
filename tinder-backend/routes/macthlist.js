@@ -8,7 +8,8 @@ router.route('/match')
     console.log(req.userId);
     MatchList.find({user:req.userId})
     .populate('user')
-    .populate('likes')
+    .populate('likeSent')
+    .populate('likeReceive')
     .populate('matches')
     .then((list) =>{
         res.statusCode = 200;
@@ -23,17 +24,16 @@ router.route('/match')
     
     MatchList.findOne({user:userId})
     .then((user) =>{
-        var idx = user.likes.indexOf(matchId);
-        user.likes.splice(idx,1);
+        var idx = user.likeSent.indexOf(matchId);
+        user.likeSent.splice(idx,1);
         idx = user.matches.indexOf(matchId);
-        console.log(matchId,' ',idx);
         if(idx<0) {user.matches.push(matchId);}
         user.save();
 
         MatchList.findOne({user:matchId})
         .then((matchedUser) =>{
-            var matchidx = matchedUser.likes.indexOf(userId);
-            matchedUser.likes.splice(matchidx,1);
+            var matchidx = matchedUser.likeRecieve.indexOf(userId);
+            matchedUser.likeRecieve.splice(matchidx,1);
             if(matchedUser.matches.indexOf(userId)<0)
                 matchedUser.matches.push(userId);
             matchedUser.save();
@@ -75,12 +75,12 @@ router.route('/likes')
 .get(isUser,(req,res,next) =>{
     MatchList.find({user:req.userId})
     .populate('user')
-    .populate('likes')
+    .populate('likeSent')
+    .populate('likeRecieve')
     .then((list) =>{
-        var Likes = list[0].likes;
         res.statusCode = 200;
         res.setHeader('Content-Type','application/json');
-        res.json(Likes);
+        res.json({sent:list[0].likeSent,receive:list[0].likeRecieve});
     },(err)=> next(err))
     .catch((err)=> next(err))
 })
@@ -92,7 +92,7 @@ router.route('/likes')
         if(user === null){
             MatchList.create({user:userId})
             .then((createdUser) => {
-                createdUser.likes.push(matchId);
+                createdUser.likeSent.push(matchId);
                 createdUser.save();
 
                 MatchList.findOne({user:matchId})
@@ -100,13 +100,13 @@ router.route('/likes')
                     if(matchuser === null){
                         MatchList.create({user:matchId})
                         .then((createdMatchUser) => {
-                            createdMatchUser.likes.push(userId);
+                            createdMatchUser.likeRecieve.push(userId);
                             createdMatchUser.save();
                         },err => next(err));
                     }
                     else{
-                        if( (matchuser.likes.indexOf(userId)<0) && (matchuser.matches.indexOf(userId)<0) )
-                            matchuser.likes.push(userId);
+                        if( (matchuser.likeRecieve.indexOf(userId)<0) && (matchuser.matches.indexOf(userId)<0) )
+                            matchuser.likeRecieve.push(userId);
                             matchuser.save();
                     }
                 },err => next(err))
@@ -117,8 +117,8 @@ router.route('/likes')
             },err => next(err))
         }
         else{
-            if( (user.likes.indexOf(matchId)<0) && (user.matches.indexOf(matchId)<0) )
-                user.likes.push(matchId);
+            if( (user.likeSent.indexOf(matchId)<0) && (user.matches.indexOf(matchId)<0) )
+                user.likeSent.push(matchId);
                 user.save();
             
                 MatchList.findOne({user:matchId})
@@ -126,13 +126,13 @@ router.route('/likes')
                     if(matchuser === null){
                         MatchList.create({user:matchId})
                         .then((createdMatchUser) => {
-                            createdMatchUser.likes.push(userId);
+                            createdMatchUser.likeRecieve.push(userId);
                             createdMatchUser.save();
                         },err => next(err));
                     }
                     else{
-                        if( (matchuser.likes.indexOf(userId)<0) && (matchuser.matches.indexOf(userId)<0) )
-                            matchuser.likes.push(userId);
+                        if( (matchuser.likeRecieve.indexOf(userId)<0) && (matchuser.matches.indexOf(userId)<0) )
+                            matchuser.likeRecieve.push(userId);
                             matchuser.save();
                     }
                 },err => next(err));
@@ -177,13 +177,17 @@ router.route('/likes/:matchId')
     MatchList.findOne({user:userId})
     .then((user) =>{
 
-        var idx = user.likes.indexOf(matchId);
-        user.likes.splice(idx,1);
+        var idx = user.likeRecieve.indexOf(matchId);
+        user.likeRecieve.splice(idx,1);
+
+        var idx = user.likeSent.indexOf(matchId);
+        user.likeSent.splice(idx,1);
+
         user.save();
         MatchList.find({user:matchId})
         .then((matchedUser) =>{
-            var idx = matchedUser.likes.indexOf(userId);
-            matchedUser.likes.splice(idx,1);
+            var idx = matchedUser.likeRecieve.indexOf(userId);
+            matchedUser.likeRecieve.splice(idx,1);
             matchedUser.save();
         }, err => next(err));
 

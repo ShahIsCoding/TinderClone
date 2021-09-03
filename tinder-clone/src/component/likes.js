@@ -7,7 +7,8 @@ import AddCircleOutlineSharpIcon from '@material-ui/icons/AddCircleOutlineSharp'
 
 function Likes() {
 
-    const [likes,setLikes] = useState([]);
+    const [likeR,setLikeRecieve] = useState([]);
+    const [likeS,setLikeSent] = useState([]);
     const [trigger,setTrigger] = useState(0);  
 
     useEffect(() => {
@@ -15,7 +16,9 @@ function Likes() {
             console.log('FETCH Likes');
             axiosInstance.get(`/matchlist/likes`)
             .then((req) =>{
-                setLikes(req.data)
+                console.log(req);
+                setLikeRecieve(req.data.receive);
+                setLikeSent(req.data.sent)
             })
             .catch((err) => console.log(err));
         }
@@ -44,9 +47,11 @@ function Likes() {
         addmtches(personId);
     }
     return (
-        <div className='likes'>
+        <div className="likes">
+
+<div className='likes'>
             {
-                likes.map((like) =>{
+                likeS.map((like) =>{
                     return  <div className='like' key = {like._id}> 
                                 <Chat 
                                     name={like.firstname +' '+like.lastname}
@@ -54,7 +59,27 @@ function Likes() {
                                     timestamp="time taken"
                                     profilePic = {like.imgUrl}
                                     id={like._id}
-
+                                />
+                                <div className="btns">
+                                    <IconButton>
+                                        <HighlightOffIcon  onClick={() => removeMatches(like._id)}/>
+                                    </IconButton>
+                                </div>
+                            </div>
+                })
+            }
+        </div>
+        <hr/>
+        <div className='likes'>
+            {
+                likeR.map((like) =>{
+                    return  <div className='like' key = {like._id}> 
+                                <Chat 
+                                    name={like.firstname +' '+like.lastname}
+                                    message='message'
+                                    timestamp="time taken"
+                                    profilePic = {like.imgUrl}
+                                    id={like._id}
                                 />
                                 <div className="btns">
                                     <IconButton>
@@ -68,6 +93,9 @@ function Likes() {
                 })
             }
         </div>
+
+        </div>
+                
     )
 }
 
