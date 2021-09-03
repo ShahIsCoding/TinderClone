@@ -24,7 +24,7 @@ function Likes() {
 
 
     const removeMatches = (matchId) =>{
-            axiosInstance.delete(`/matchlist/${matchId}`)
+            axiosInstance.delete(`/matchlist/likes/${matchId}`)
             .then((matches) => {
                 setTrigger(() =>trigger+1);    
             })

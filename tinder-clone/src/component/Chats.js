@@ -27,7 +27,7 @@ function Chats(props) {
 
     const removeMatches = (userId,matchId) =>{
            console.log(userId,'  ',matchId);
-            axiosInstance.delete(`/matchlist/${matchId}`)
+            axiosInstance.delete(`/matchlist/match/${matchId}`)
             .then((matches) => {
                 setTrigger(() =>trigger+1);    
             })

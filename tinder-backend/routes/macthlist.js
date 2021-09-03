@@ -144,7 +144,33 @@ router.route('/likes')
     .catch(err => next(err))
 });
 
-router.route('/:matchId')
+
+router.route('/match/:matchId')
+.delete(isUser,(req,res,next) =>{
+    var matchId = req.params.matchId;
+    var userId = req.userId;
+    MatchList.findOne({user:userId})
+    .then((user) =>{
+
+        idx = user.matches.indexOf(matchId);
+        user.matches.splice(idx,1);
+        user.save();
+
+        MatchList.find({user:matchId})
+        .then((matchedUser) =>{
+            idx = matchedUser.matches.indexOf(userId);
+;           matchedUser.matches.splice(idx,1);
+            matchedUser.save();
+        }, err => next(err));
+
+        res.statusCode = 200;
+        res.setHeader('Content-Type','application/json');
+        res.json(user);
+    }, err => next(err))
+    .catch((err) => next(err));
+});
+
+router.route('/likes/:matchId')
 .delete(isUser,(req,res,next) =>{
     var matchId = req.params.matchId;
     var userId = req.userId;
@@ -152,25 +178,18 @@ router.route('/:matchId')
     .then((user) =>{
 
         var idx = user.likes.indexOf(matchId);
-        console.log(idx);
         user.likes.splice(idx,1);
-        idx = user.matches.indexOf(matchId);
-        console.log(idx);
-                user.matches.splice(idx,1);
         user.save();
         MatchList.find({user:matchId})
         .then((matchedUser) =>{
             var idx = matchedUser.likes.indexOf(userId);
-            console.log(idx);            matchedUser.likes.splice(idx,1);
-            idx = matchedUser.matches.indexOf(userId);
-            console.log(idx);           matchedUser.matches.splice(idx,1);
+            matchedUser.likes.splice(idx,1);
             matchedUser.save();
         }, err => next(err));
 
-        var userlikesandmatches = user.populate('likes').populate('matches');
         res.statusCode = 200;
         res.setHeader('Content-Type','application/json');
-        res.json(userlikesandmatches);
+        res.json(user);
     }, err => next(err))
     .catch((err) => next(err));
 });
