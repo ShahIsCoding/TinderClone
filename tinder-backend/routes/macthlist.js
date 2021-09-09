@@ -11,7 +11,14 @@ router.route('/match')
     .then((list) =>{
         res.statusCode = 200;
         res.setHeader('Content-Type','application/json');
-        res.json(list[0].matches);
+        var matchlist = list[0].matches.map(m => {
+            return{
+            id:m.match._id,
+            name:m.match.firstname+' '+m.match.lastname,
+            imgUrl:m.match.imgUrl
+            }
+        });
+        res.json(matchlist);
     },(err)=> next(err))
     .catch((err)=> next(err))
 })

@@ -16,9 +16,8 @@ userRouter.route('/')
   let matches = [] ;
   MatchList.findOne({user:req.userId})
   .then((match) =>{
-    console.log("__________________matches___________",match);
     if(match !== null)
-    {match.matches.map(m => matches.push(m));
+    {match.matches.map(m => matches.push(m.match));
     match.likeSent.map(m => matches.push(m));}
     matches.push(req.userId);
     User.find({_id:{$nin:matches}})

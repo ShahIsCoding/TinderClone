@@ -14,6 +14,7 @@ function Chats() {
             console.log('FETCH MATCHES');
             axiosInstance.get(`/matchlist/match`)
             .then((req) =>{
+                console.log(req.data);
                 setMatches(req.data);
             })
             .catch((err) => console.log(err));
@@ -34,16 +35,14 @@ function Chats() {
         <div className='chats'>
             {
                 matches.map((match) =>{
-                    return  <div className='chat'                                     key = {match._id}> 
+                    return  <div className='chat'> 
                                 <Chat 
-                                    name={match.firstname +' '+match.lastname}
-                                    message='message'
-                                    timestamp="time taken"
+                                    name={match.name}
                                     profilePic = {match.imgUrl}
                                     id={match._id}
-
+                                    key = {match._id}
                                 />
-                                <IconButton>
+                                <IconButton key = {match._id}>
                                     <HighlightOffIcon  onClick={() => removeMatches(match._id)}/>
                                 </IconButton>
                             </div>
