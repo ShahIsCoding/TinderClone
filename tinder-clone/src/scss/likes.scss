@@ -1,0 +1,11 @@
+h2{
+    text-align: center;
+}
+.like{
+    display: flex;
+    justify-content:space-between ;
+
+    &:hover{
+        background-color: rgba(253,58,112,0.14);
+    }
+}

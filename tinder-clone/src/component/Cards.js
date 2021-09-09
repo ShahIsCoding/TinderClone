@@ -5,12 +5,10 @@ import {axiosInstance} from '../axios';
 function Cards(props) {
     
     const [people, setPeople] = useState([]);
-    const [Id,setId]=useState('');
     
     useEffect(() => {
 
-        setId(props.id)
-        async function fetchData(){
+       async function fetchData(){
             const request = await axiosInstance.get('/users');     
             console.log('fetchData',request.data);
             setPeople(request.data); 
@@ -30,7 +28,7 @@ function Cards(props) {
               console.log(direction);
           }
         }
-        swipe(direction,person._id,Id);
+        swipe(direction,person._id);
    }
 
     const outOfFrame = (name) =>{

@@ -22,7 +22,7 @@ function Header({backButton,card}) {
                 </Link>
 
             )}
-            <Link to='/'>
+            <Link to='/cards'>
                 <img 
                     className='header__logo'
                     src='assets/tinder.png'

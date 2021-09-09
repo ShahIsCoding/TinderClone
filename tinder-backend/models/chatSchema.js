@@ -3,6 +3,14 @@ const Schema = mongoose.Schema;
 const {ObjectId} = mongoose.Schema;
 
 var chatroom = new Schema({
+    user1:{
+        type:ObjectId,
+        ref:'User'
+    },
+    user2:{
+        type:ObjectId,
+        ref:'User'
+    },
     messages:[{
         sender:{
             type:ObjectId,

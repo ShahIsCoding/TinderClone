@@ -69,6 +69,7 @@ exports.isUser = (req,res,next) =>{
         jwt.verify(token,process.env.SECRETKEY,(err,decoded)=>{
             if(err){
                 res.statusCode = 400;
+                res.clearCookie('token', {httpOnly:true});
                 res.setHeader('Content-Type','application/json');
                 res.json({err:'User Not Logged In'});
             }
@@ -79,6 +80,7 @@ exports.isUser = (req,res,next) =>{
     }
     else {
             res.statusCode = 400;
+            res.clearCookie('token', {httpOnly:true});
             res.setHeader('Content-Type','application/json');
             res.json({err:'User Not Logged In'});
         }

@@ -1,0 +1,17 @@
+.profile__img{
+
+    height: 70vmin;
+    background-size: cover;
+    margin: 10px;
+    background-position-x: center;
+}
+.profile__details{
+    text-align: center;
+    label{
+        display: block;
+    }   
+}
+.describe{
+    flex-flow: nowrap column;
+    justify-content: space-around;
+}

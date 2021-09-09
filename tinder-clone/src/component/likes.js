@@ -50,6 +50,8 @@ function Likes() {
         <div className="likes">
 
 <div className='likes'>
+        <h2>Liked</h2>
+        <hr />
             {
                 likeS.map((like) =>{
                     return  <div className='like' key = {like._id}> 
@@ -71,7 +73,10 @@ function Likes() {
         </div>
         <hr/>
         <div className='likes'>
+        <h2 >Received</h2>
+        <hr />
             {
+                
                 likeR.map((like) =>{
                     return  <div className='like' key = {like._id}> 
                                 <Chat 

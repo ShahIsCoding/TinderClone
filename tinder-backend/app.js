@@ -40,8 +40,12 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(passport.initialize());
 require('./authentication');
 
+var whitelist = ['http://localhost:3000','http://localhost:3001','*'];
 var corsOptions = {
-  origin:'http://localhost:3000',
+  origin:function(origin,cb) {
+    if(whitelist.indexOf(origin) != -1) cb(null,true);
+    else cb(new Error('Not Allowed by cors'))
+  },
   credentials:true,
   }
 

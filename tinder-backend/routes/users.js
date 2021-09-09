@@ -2,6 +2,7 @@ var express = require('express');
 var userRouter = express.Router();
 
 var User = require('../models/UserSchema');
+var MatchList = require('../models/matchList');
 var genPassword = require('../lib/passwordsUtils').genPassword;
 var passport = require('passport');
 var isUser = require('../authentication').isUser;
@@ -9,17 +10,24 @@ var getJwt__token = require('../authentication').getJwt__token;
 require('dotenv').config();
 
 /* GET users listing. */
+
 userRouter.route('/')
-.get(isUser,(req, res, next) => {
-  User.find({})
-  .then((user) =>{
-    console.log(user);
-    var USERS = user.filter((user) => user._id != req.userId) 
-    console.log(USERS);
-    res.stusCode = 200;
-    res.setHeader('Content-Type','application/json');
-    res.json(USERS);
-  },(err)=>next(err))
+.get(isUser,(req,res,next) =>{
+  let matches = [] ;
+  MatchList.findOne({user:req.userId})
+  .then((match) =>{
+    console.log("__________________matches___________",match);
+    if(match !== null)
+    {match.matches.map(m => matches.push(m));
+    match.likeSent.map(m => matches.push(m));}
+    matches.push(req.userId);
+    User.find({_id:{$nin:matches}})
+    .then((user)=>{
+      res.statusCode = 200;
+      res.setHeader('Content-Type','application/json');
+      res.json(user);  
+    })
+  }, err=> next(err) )
   .catch((err) => next(err));
 })
 .delete(isUser,(req, res, next) => {
