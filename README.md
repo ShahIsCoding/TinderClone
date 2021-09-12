@@ -28,8 +28,29 @@ This project has the following function
 * Chat with the match User.
 
 ## Installation
-You can clone this project with
-`git clone `
+-  ### `clone`
+    Clone the app from the console.Open the console and type the following code
+    ```
+    git clone https://github.com/ShahIsCoding/TinderClone.git
+    cd tinder-clone 
+    npm install
+    cd ..
+    cd tinder-backend
+    npm install
+    ```
+-  ### data Storage
+   You need to add a make a of `.env` and write the following code
+   ```   
+    MONGODB_URL = 'add the mongodb Url '
+    SECRETKEY = 'add the key to encrypt the jwt '
+   ```
+   
+-  ### `npm start`
+    Runs the app in the development mode.\
+    Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+
+    The page will reload if you make edits.\
+    You will also see any lint errors in the console.   
 
 ## API Reference
 
@@ -40,4 +61,3 @@ Describe and show how to run the tests with code examples.
 
 ## How to use?
 If people like your project they’ll want to learn how they can use it. To do so include step by step guide to use your project.
-
