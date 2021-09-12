@@ -13,9 +13,10 @@ router.route('/match')
         res.setHeader('Content-Type','application/json');
         var matchlist = list[0].matches.map(m => {
             return{
-            id:m.match._id,
+            matchId:m.match._id,
             name:m.match.firstname+' '+m.match.lastname,
-            imgUrl:m.match.imgUrl
+            imgUrl:m.match.imgUrl,
+            chatroomId:m.chatroom
             }
         });
         res.json(matchlist);
@@ -184,8 +185,8 @@ router.route('/match/:matchId')
         MatchList.findOne({user:matchId})
         .then((matchedUser) =>{
 
-            var idx = matchedUser.matches.filter(m => m.match != userId);
-            matchedUser = idx;
+            var matchidx = matchedUser.matches.filter(m => m.match != userId);
+            matchedUser = matchidx;
             matchedUser.save();
 
         }, err => next(err));
@@ -197,7 +198,30 @@ router.route('/match/:matchId')
     .catch((err) => next(err));
 });
 
-router.route('/likes/:matchId')
+router.route('/likesent/:matchId')
+.delete(isUser,(req,res,next) =>{
+    var matchId = req.params.matchId;
+    var userId = req.userId;
+    MatchList.findOne({user:userId})
+    .then((user) =>{
+
+        var idx = user.likeSent.indexOf(matchId);
+        user.likeSent.splice(idx,1);
+        user.save();
+        MatchList.find({user:matchId})
+        .then((matchedUser) =>{
+            var idx = matchedUser.likeRecieve.indexOf(userId);
+            if(idx>=0) matchedUser.likeRecieve.splice(idx,1);
+            matchedUser.save();
+        }, err => next(err));
+
+        res.statusCode = 200;
+        res.setHeader('Content-Type','application/json');
+        res.json(user);
+    }, err => next(err))
+    .catch((err) => next(err));
+});
+router.route('/likesRecieve/:matchId')
 .delete(isUser,(req,res,next) =>{
     var matchId = req.params.matchId;
     var userId = req.userId;
@@ -207,14 +231,11 @@ router.route('/likes/:matchId')
         var idx = user.likeRecieve.indexOf(matchId);
         user.likeRecieve.splice(idx,1);
 
-        var idx = user.likeSent.indexOf(matchId);
-        user.likeSent.splice(idx,1);
-
         user.save();
         MatchList.find({user:matchId})
         .then((matchedUser) =>{
-            var idx = matchedUser.likeRecieve.indexOf(userId);
-            matchedUser.likeRecieve.splice(idx,1);
+            var idx = matchedUser.likeSent.indexOf(userId);
+            if(idx>=0) matchedUser.likeSent.splice(idx,1);
             matchedUser.save();
         }, err => next(err));
 

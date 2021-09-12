@@ -1,59 +1,60 @@
-import React,{useState} from 'react'
+import React,{useState,useEffect} from 'react'
+import { useParams } from 'react-router';
+
+import { axiosInstance } from '../axios';
+
 import { Avatar } from '@material-ui/core';
-function ChatScreen() {
+
+function ChatScreen(props) {
     
+    const [id, setid]  = useState('');
+    const {chatroomId} = useParams();
     const [input, setInput] = useState('');
-    const [messages, setMessage] = useState([
-        {
-            name:'Sai',
-            image:'https://i.zoomtventertainment.com/story/sai-pallavi_1.jpg?tr=w-1200,h-900',
-            message:'Whats up'
-        },
-        {
-            name:'Sai',
-            image:'https://i.zoomtventertainment.com/story/sai-pallavi_1.jpg?tr=w-1200,h-900',
-            message:'How is it going'
-        },
-        {
-            name:'Sai',
-            image:'https://i.zoomtventertainment.com/story/sai-pallavi_1.jpg?tr=w-1200,h-900',
-            message:'Lol'
+    const [messages, setMessage] = useState([]);
+
+   useEffect(() => {
+    if(id === '')
+    {    axiosInstance.get('/users/user')
+        .then(usr => setid(usr.data._id));
+    }
+        async function fetchMessages(chatroomId){
+            await axiosInstance.get(`/chats/${chatroomId}`)
+            .then(messages => setMessage(messages.data))
+            .catch(err => console.log(err));
         }
-    ]);
+        fetchMessages(chatroomId);
+    }, [messages]);
 
     const handleSend = e =>{
         e.preventDefault();
-        setMessage([...messages,{message:input}]);
-        console.log(messages);
-        setInput("");
+        async function postMessage(){
+            var req =  await axiosInstance.post(`/chats/${chatroomId}`,{
+                message:input
+            });
+            setInput("");
+        }
+    postMessage();
     }
     return (
         <div className='chatScreen'>
-            <p className='chatScreen__timestamp'>You have matched with Sai on 01/08/2021</p>
-            {messages.map((message)=>
-                (message.name)?(
-                    <div className='chatScreen__message'>
-                        <Avatar
-                        className=''
-                        alt = {message.name}
-                        src = {message.image}
-                            />
-                        <p className='chatScreen__text'>{message.message}</p>
-                    </div>
-                ):(
-                <div className='chatScreen__message'>
-                    <p className='chatScreen__textUser'>{message.message}</p>
-                </div>
-                )
-            )}
-            <form className='chatScreen__input'>
+            <p className='chatScreen__timestamp'>{id} have matched with Sai on  {chatroomId}  01/08/2021</p>
+            <div className='chatScreen__message' >
+                {messages.map((message)=>
+                    (!message.sender)?
+                       ( <p className='chatScreen__text'>{message.message}</p>)
+                    :
+                        (<p className='chatScreen__textUser'>{message.message}</p>)
+                )}
+            </div>
+            
+            <form className='chatScreen__input' onSubmit={(e) => handleSend(e)}>
                 <input className='chatScreen__inputField'
                 placeholder='Type a message'
                 type='text'
                 value={input}
                 onChange={(e)=> setInput(e.target.value)}
                 />
-                <button onClick={handleSend} className='chatScreen__inputButton'>SEND</button>
+                <button type='submit' className='chatScreen__inputButton'>SEND</button>
             </form>
         </div>
     )

@@ -14,10 +14,10 @@ const customFields ={
 const verifyCallback = (username,password,done) => {
     User.findOne({email:username})
     .then((user) =>{
-        console.log('USER',user);
+        // console.log('USER',user);
         if(!user) return done(null,false);  
         const isValid = isValidPassword(password,user.password.hash,user.password.salt);
-        console.log('isValid',isValid);
+        // console.log('isValid',isValid);
         if(isValid) done(null,user);
         done(null,false);
     })

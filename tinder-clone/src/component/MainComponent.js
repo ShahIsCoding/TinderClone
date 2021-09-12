@@ -21,7 +21,7 @@ function MainComponent() {
     return (
         <div>
              <Switch>
-                <Route path='/chat/:matchId'>
+                <Route path='/chat/:chatroomId'>
                     <Header backButton='/chat'/>
                     <ChatScreen />
                 </Route>

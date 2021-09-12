@@ -26,14 +26,22 @@ function Likes() {
     }, [trigger]);
 
 
-    const removeMatches = (matchId) =>{
-            axiosInstance.delete(`/matchlist/likes/${matchId}`)
+    const removeLikeSent = (matchId) =>{
+            axiosInstance.delete(`/matchlist/likeSent/${matchId}`)
             .then((matches) => {
                 setTrigger(() =>trigger+1);    
             })
             .catch(err => console.log(err));
         
     }
+    const removeLikeRecieve = (matchId) =>{
+        axiosInstance.delete(`/matchlist/likeRecieve/${matchId}`)
+        .then((matches) => {
+            setTrigger(() =>trigger+1);    
+        })
+        .catch(err => console.log(err));
+    
+}
     const addMatches = (personId) =>{
         async function addmtches(personId){
             await axiosInstance.post(`/matchlist/match`,{
@@ -64,7 +72,7 @@ function Likes() {
                                 />
                                 <div className="btns">
                                     <IconButton>
-                                        <HighlightOffIcon  onClick={() => removeMatches(like._id)}/>
+                                        <HighlightOffIcon  onClick={() => removeLikeSent(like._id)}/>
                                     </IconButton>
                                 </div>
                             </div>
@@ -91,7 +99,7 @@ function Likes() {
                                         <AddCircleOutlineSharpIcon onClick={() => addMatches(like._id)}/>
                                     </IconButton>
                                     <IconButton>
-                                        <HighlightOffIcon  onClick={() => removeMatches(like._id)}/>
+                                        <HighlightOffIcon  onClick={() => removeLikeRecieve(like._id)}/>
                                     </IconButton>
                                 </div>
                             </div>

@@ -1,15 +1,15 @@
 .chatScreen{
-    
 
     &__text{
-        margin-left: 10px;
-        background-color: lightgray;
+        margin-right: auto;
+        background-color: $tinder-orange;
         padding: 15px;
         border-radius: 20px;
+        color: white;
     }
     &__textUser{
         margin-left: auto;
-        background-color: #29b3cd;
+        background-color: $tinder-pink;
         padding: 15px;
         border-radius: 20px;
         color: white;
@@ -22,7 +22,6 @@
 
     &__input{
         display: flex;
-        padding: 5px;
         position: fixed;
         bottom: 0;
         width: 100%;
@@ -44,7 +43,8 @@
 }
 .chatScreen__message {
     display: flex;
-    display: flex;
-    align-items: center;
+    flex-flow: column nowrap;
     padding: 20px;
+    overflow:auto;
+    height: 76vh;
 }
