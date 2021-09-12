@@ -12,7 +12,6 @@ Starting the Mern devs with Tinder development.
 ### Function to be Added
     * Authentications 
       3. oAuth feature
-    * Making a Chat 
     * Making A profile
     * making swipe cards without any premade node modules 
 
