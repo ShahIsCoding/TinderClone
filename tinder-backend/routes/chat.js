@@ -24,7 +24,26 @@ chatRouter.route('/')
     },err => next(err))
     .catch((err)=> next(err))
 });
-
+chatRouter.route('/users/:chatroomId')
+.get(isUser,(req,res,next) =>{
+    var chatroomId = req.params.chatroomId;
+    Chat.findById(chatroomId)
+    .populate('user1')
+    .populate('user2')
+    .then(chat => {
+        var loggedInUser = (chat.user1._id == req.userId)?chat.user1 : chat.user2;
+        var macthedUser  = (chat.user2._id == loggedInUser)?chat.user1 : chat.user2;
+        loggedInUser = loggedInUser.imgUrl;
+        macthedUser  = {
+            name:macthedUser.firstname+' '+macthedUser.lastname,
+            imgUrl:macthedUser.imgUrl
+        };
+        res.statusCode = 200 ;
+        res.setHeader('Content-Type','application/json');
+        res.json({loggedInUser : loggedInUser,macthedUser:macthedUser});
+    },err => next(err))
+    .catch(err => next(err))
+});
 chatRouter.route('/:chatroomId')
 .get(isUser,(req,res,next) =>{
     var chatroomId = req.params.chatroomId;
@@ -41,7 +60,8 @@ chatRouter.route('/:chatroomId')
         res.statusCode = 200 ;
         res.setHeader('Content-Type','application/json');
         res.json(Chat);
-    })
+    },err => next(err))
+    .catch(err => next(err))
 })
 .post(isUser,(req,res,next) =>{
     var chatroomId = req.params.chatroomId;
@@ -60,5 +80,5 @@ chatRouter.route('/:chatroomId')
         res.json(chat);
     }, err => next(err))
     .catch(err => next(err));
-})
+});
 module.exports = chatRouter;
