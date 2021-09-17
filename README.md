@@ -38,24 +38,18 @@ This project has the following function
     cd tinder-backend
     npm install
     ```
-<<<<<<< HEAD
 -  ### data Storage
-=======
 -  ### `Data Storage`
->>>>>>> 58b4616b271a97b58812d9303ddc5abda159b204
    You need to add a make a of `.env` and write the following code
    ```   
     MONGODB_URL = 'add the mongodb Url '
     SECRETKEY = 'add the key to encrypt the jwt '
    ```
-<<<<<<< HEAD
    
-=======
 -  ### `Starting the backend `
     ```
     nodemon
     ```
->>>>>>> 58b4616b271a97b58812d9303ddc5abda159b204
 -  ### `npm start`
     Runs the app in the development mode.\
     Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
