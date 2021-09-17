@@ -40,7 +40,7 @@ chatRouter.route('/users/:chatroomId')
         };
         res.statusCode = 200 ;
         res.setHeader('Content-Type','application/json');
-        res.json({loggedInUser : loggedInUser,macthedUser:macthedUser});
+        res.json({loggedInUser : loggedInUser,macthedUser:macthedUser,chat:chat});
     },err => next(err))
     .catch(err => next(err))
 });

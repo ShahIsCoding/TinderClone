@@ -15,8 +15,7 @@ var usersRouter = require('./routes/users');
 var matchRouter = require('./routes/macthlist');
 var chatRouter  = require('./routes/chat');
 
-const connection_url = 'mongodb://localhost:27017/CloneTINDER';
-// const connection_url = process.env.MONGODB_URL;
+const connection_url = process.env.MONGODB_URL;
 const connect = mongoose.connect(connection_url,{
   useNewUrlParser: true,
   useUnifiedTopology: true

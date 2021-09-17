@@ -40,7 +40,7 @@ function MainComponent() {
                 <Route path='/cards'>
                     <Header />
                     <Cards />
-                    <SwipeButtons />
+                    {/* <SwipeButtons /> */}
                 </Route>
                 <Route path='/userAuth'>
                     <UserAuth />

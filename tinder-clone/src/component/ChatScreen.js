@@ -19,7 +19,6 @@ function ChatScreen(props) {
         async function fetchChatroomUser(chatroomId){
             await axiosInstance.get(`/chats/users/${chatroomId}`)
             .then(users => {
-                console.log(users);
                 setMatch(users.data.macthedUser)
 
             })
@@ -38,7 +37,7 @@ function ChatScreen(props) {
         e.preventDefault();
         console.log(macthedUser);
         async function postMessage(){
-            var req =  await axiosInstance.post(`/chats/${chatroomId}`,{
+            await axiosInstance.post(`/chats/${chatroomId}`,{
                 message:input
             });
             setInput("");

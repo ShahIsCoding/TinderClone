@@ -5,7 +5,7 @@ import {axiosInstance} from '../axios';
 function Cards(props) {
     
     const [people, setPeople] = useState([]);
-    
+
     useEffect(() => {
 
        async function fetchData(){
