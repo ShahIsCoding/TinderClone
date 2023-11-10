@@ -1,5 +1,5 @@
 import { React, useState, useEffect } from "react";
-import { axiosInstance } from "../axios";
+import { axiosInstance } from "../services/axios";
 
 function Cards(props) {
   const [people, setPeople] = useState([]);

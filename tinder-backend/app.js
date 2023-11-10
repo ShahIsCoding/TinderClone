@@ -16,10 +16,7 @@ var matchRouter = require("./routes/macthlist");
 var chatRouter = require("./routes/chat");
 
 const connection_url = process.env.MONGODB_URL;
-const connect = mongoose.connect(connection_url, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-});
+const connect = mongoose.connect(connection_url);
 
 connect.then((db) => {
   console.log("Connected to database");
@@ -39,7 +36,18 @@ app.use(express.static(path.join(__dirname, "public")));
 app.use(passport.initialize());
 require("./authentication");
 
-app.use(cors());
+var allowlist = ["http://localhost:3000", "*"];
+var corsOptionsDelegate = function (req, callback) {
+  var corsOptions;
+  if (allowlist.indexOf(req.header("Origin")) !== -1) {
+    corsOptions = { origin: true }; // reflect (enable) the requested origin in the CORS response
+  } else {
+    corsOptions = { origin: false }; // disable CORS for this request
+  }
+  callback(null, corsOptions); // callback expects two parameters: error and options
+};
+
+app(cors(corsOptionsDelegate));
 
 app.use("/", indexRouter);
 app.use("/matchlist", matchRouter);
