@@ -42,7 +42,7 @@ This project has the following function
 -  ### `Data Storage`
    You need to add a make a of `.env` and write the following code
    ```   
-    MONGODB_URL = 'add the mongodb Url '
+    MONGODB_URL = 'mongodb://localhost:27017/'
     SECRETKEY = 'add the key to encrypt the jwt '
    ```
    
