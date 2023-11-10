@@ -1,5 +1,5 @@
 import React,{ useState} from 'react'
-import { useHistory } from 'react-router';
+import { useLocation } from 'react-router';
 import {Form,FormGroup,Label,Input,Button,} from 'reactstrap';
 import  {axiosInstance} from '../axios'; 
 
@@ -14,7 +14,7 @@ function UserAuth(props) {
     const [gender,setGender]= useState('Male');
 
     const [page,setPage] =  useState(true);
-    const history = useHistory();
+    const useLocation = useLocation();
 
 
     const handleSubmit = (e) =>{
@@ -34,7 +34,7 @@ function UserAuth(props) {
             .then((resp) => { 
                 if(resp.status < 400){
                 console.log(resp);
-                history.replace('/cards');}
+                useLocation.replace('/cards');}
                 else{
                     alert('Something Went Wrong');
                 }
@@ -51,7 +51,7 @@ function UserAuth(props) {
             .then((resp) => { 
                 if(resp.status < 400){
 
-                    history.replace('/cards');}
+                    useLocation.replace('/cards');}
                     else{
                         alert('Something Went Wrong');
                     }})

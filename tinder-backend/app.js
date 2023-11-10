@@ -1,73 +1,64 @@
-var createError = require('http-errors');
-var express = require('express');
-var path = require('path');
-var cookieParser = require('cookie-parser');
-var logger = require('morgan');
+var createError = require("http-errors");
+var express = require("express");
+var path = require("path");
+var cookieParser = require("cookie-parser");
+var logger = require("morgan");
 
-var mongoose = require('mongoose');
+var mongoose = require("mongoose");
 
-var passport = require('passport');
-require('dotenv').config();
-var cors = require('cors');
+var passport = require("passport");
+require("dotenv").config();
+var cors = require("cors");
 
-var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
-var matchRouter = require('./routes/macthlist');
-var chatRouter  = require('./routes/chat');
+var indexRouter = require("./routes/index");
+var usersRouter = require("./routes/users");
+var matchRouter = require("./routes/macthlist");
+var chatRouter = require("./routes/chat");
 
 const connection_url = process.env.MONGODB_URL;
-const connect = mongoose.connect(connection_url,{
+const connect = mongoose.connect(connection_url, {
   useNewUrlParser: true,
-  useUnifiedTopology: true
+  useUnifiedTopology: true,
 });
 
-connect.then((db) =>{
-  console.log('Connected to database');
-},(err) => next(err));
+connect.then((db) => {
+  console.log("Connected to database");
+});
 
 var app = express();
 // view engine setup
-app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'jade');
+app.set("views", path.join(__dirname, "views"));
+app.set("view engine", "jade");
 
-app.use(logger('dev'));
+app.use(logger("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, "public")));
 
 app.use(passport.initialize());
-require('./authentication');
+require("./authentication");
 
-var whitelist = ['http://localhost:3000','http://localhost:3001','*'];
-var corsOptions = {
-  origin:function(origin,cb) {
-    if(whitelist.indexOf(origin) != -1) cb(null,true);
-    else cb(new Error('Not Allowed by cors'))
-  },
-  credentials:true,
-  }
+app.use(cors());
 
-app.use(cors(corsOptions));
-
-app.use('/', indexRouter);
-app.use('/matchlist',matchRouter);
-app.use('/users', usersRouter);
-app.use('/chats',chatRouter);
+app.use("/", indexRouter);
+app.use("/matchlist", matchRouter);
+app.use("/users", usersRouter);
+app.use("/chats", chatRouter);
 // catch 404 and forward to error handler
-app.use(function(req, res, next) {
+app.use(function (req, res, next) {
   next(createError(404));
 });
 
 // error handler
-app.use(function(err, req, res, next) {
+app.use(function (err, req, res, next) {
   // set locals, only providing error in development
   res.locals.message = err.message;
-  res.locals.error = req.app.get('env') === 'development' ? err : {};
+  res.locals.error = req.app.get("env") === "development" ? err : {};
 
   // render the error page
   res.status(err.status || 500);
-  res.render('error');
+  res.render("error");
 });
 
 module.exports = app;

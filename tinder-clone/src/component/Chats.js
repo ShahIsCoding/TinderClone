@@ -1,5 +1,4 @@
 import React,{useState,useEffect} from 'react'
-import { useHistory } from 'react-router';
 
 import Chat from './ChatCards';
 import {axiosInstance} from '../axios';
@@ -10,7 +9,6 @@ import HighlightOffIcon from '@material-ui/icons/HighlightOff';
 
 function Chats(props) {
 
-    const history = useHistory();
     const [matches,setMatches] = useState([]);
     const [trigger,setTrigger] = useState(0);  
 
